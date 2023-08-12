@@ -61,7 +61,7 @@ function MyNotesPage() {
   // ---- Handler Functions & API Calls ---- //
   const getUserDetails = async () => {
     try {
-      const response = await axios.get("/api/auth/authuser");
+      const response = await axios.post("/api/auth/authuser");
       if (response.data.success) {
         setUser(response.data.data);
       } else {

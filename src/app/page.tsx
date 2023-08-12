@@ -14,7 +14,7 @@ export default function Home() {
 
   const getUserDetails = async () => {
     try {
-      const response = await axios.get("/api/auth/authuser");
+      const response = await axios.post("/api/auth/authuser");
       if (response.data.success) {
         router.push("/mynotes");
       } else {
