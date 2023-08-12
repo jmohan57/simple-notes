@@ -4,6 +4,7 @@ import { ITokenData } from "@/types/token-data-interface";
 import { UserInterface } from "@/types/user-interface";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 connect();
@@ -52,7 +53,7 @@ export async function POST(request: NextRequest) {
       success: true,
     });
 
-    response.cookies.set("token", token);
+    cookies().set({ name: "token", value: token, httpOnly: true });
 
     return response;
   } catch (error) {
