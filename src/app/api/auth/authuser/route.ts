@@ -41,6 +41,7 @@ export async function GET(request: NextRequest) {
         message: "Can not access token !",
         success: false,
         staus: 400,
+        token: request.cookies.get("token")
       });
       response.cookies.delete("token");
       return response;
