@@ -23,12 +23,13 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({
           message: "Invalid Token",
           success: false,
-          userId: userId
+          userId: userId || null
         });
       } else {
         return NextResponse.json({
           message: "Sorry, some error occurred",
           success: false,
+          userId: userId || null
         });
       }
     }
