@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
       });
     } else {
       // Remove token from cookies
-      const deleteCookie = request.cookies.delete("token");
+      const deleteCookie = request.cookies.clear();
       if (deleteCookie) {
         return NextResponse.json({
           message: "Invalid Token",
