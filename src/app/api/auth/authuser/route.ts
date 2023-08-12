@@ -7,7 +7,6 @@ connect();
 
 export async function GET(request: NextRequest) {
   try {
-    const token = request.cookies.get('token')?.value || null;
     const userId = getDataFromToken(request)?.id;
     const user = await User.findById(userId).select("-password");
 
@@ -24,18 +23,16 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({
           message: "Invalid Token",
           success: false,
-          userId: userId || null,
-          token: token
         });
       } else {
         return NextResponse.json({
           message: "Sorry, some error occurred",
           success: false,
-          userId: userId || null
         });
       }
     }
   } catch (error: any) {
+    request.cookies.clear();
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
