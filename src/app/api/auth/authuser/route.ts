@@ -18,11 +18,13 @@ export async function GET(request: NextRequest) {
       });
     } else {
       // Remove token from cookies
-      request.cookies.delete("token");
-      return NextResponse.json({
-        message: "Invalid Token",
-        success: false,
-      });
+      const deleteCookie = request.cookies.delete("token");
+      if (deleteCookie) {
+        return NextResponse.json({
+          message: "Invalid Token",
+          success: false,
+        });
+      }
     }
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
