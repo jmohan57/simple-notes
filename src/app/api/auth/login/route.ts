@@ -55,7 +55,6 @@ export async function POST(request: NextRequest) {
     response.cookies.set("token", token, {
       httpOnly: true,
       secure: true,
-      expires: 2147483647,
     });
 
     return response;
