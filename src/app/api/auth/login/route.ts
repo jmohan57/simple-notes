@@ -4,7 +4,6 @@ import { ITokenData } from "@/types/token-data-interface";
 import { UserInterface } from "@/types/user-interface";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 connect();
@@ -45,7 +44,7 @@ export async function POST(request: NextRequest) {
       username: user.username!,
       fullname: user.fullname!,
     };
-    const token = await jwt.sign(tokenData, process.env.TOKEN_SECRET!);
+    const token = jwt.sign(tokenData, process.env.TOKEN_SECRET!);
 
     const response = NextResponse.json({
       message: "Logged in successfully !",
@@ -53,7 +52,7 @@ export async function POST(request: NextRequest) {
       success: true,
     });
 
-    cookies().set({ name: "token", value: token, httpOnly: true });
+    response.cookies.set("token", token);
 
     return response;
   } catch (error) {

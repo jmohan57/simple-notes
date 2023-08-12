@@ -2,14 +2,13 @@ import { connect } from "@/dbconfig/dbConfig";
 import User from "@/models/userModel";
 import { ITokenData } from "@/types/token-data-interface";
 import jwt from "jsonwebtoken";
-import { cookies } from 'next/headers'
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 connect();
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const token = cookies().get("token")?.value || "";
+    const token = request.cookies.get("token")?.value || "";
     if (token.length > 0) {
       const data: ITokenData = jwt.verify(
         token,
