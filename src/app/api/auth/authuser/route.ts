@@ -18,21 +18,22 @@ export async function GET(request: NextRequest) {
       });
     } else {
       // Remove token from cookies
-      const deleteCookie = request.cookies.clear();
-      if (deleteCookie) {
-        return NextResponse.json({
-          message: "Invalid Token",
-          success: false,
-        });
-      } else {
-        return NextResponse.json({
-          message: "Sorry, some error occurred",
-          success: false,
-        });
-      }
+      const response = NextResponse.json({
+        message: "Invalid Token !",
+        success: false,
+        staus: 400,
+      });
+      response.cookies.delete("token");
+      return response;
     }
   } catch (error: any) {
-    request.cookies.clear();
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    // Remove token from cookies
+    const response = NextResponse.json({
+      message: "Sorry, some error occured !",
+      success: false,
+      staus: 400,
+    });
+    response.cookies.delete("token");
+    return response;
   }
 }
