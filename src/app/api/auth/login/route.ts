@@ -52,11 +52,9 @@ export async function POST(request: NextRequest) {
       success: true,
     });
 
-    const cookieExpiration = (new Date()).getDate() + 15; // 15 days
     response.cookies.set("token", token, {
       httpOnly: true,
       secure: true,
-      expires: cookieExpiration
     });
 
     return response;
