@@ -7,7 +7,7 @@ connect();
 
 export async function GET(request: NextRequest) {
   try {
-    const token = request.cookies.get('token');
+    const token = request.cookies.get('token') || null;
     const userId = getDataFromToken(request)?.id;
     const user = await User.findById(userId).select("-password");
 
