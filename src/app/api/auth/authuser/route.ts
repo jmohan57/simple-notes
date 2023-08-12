@@ -23,6 +23,7 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({
           message: "Invalid Token",
           success: false,
+          userId: userId
         });
       } else {
         return NextResponse.json({
