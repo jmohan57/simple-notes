@@ -98,7 +98,7 @@ function MyNotesPage() {
   const handleSigningOut = async () => {
     setUserLoading(true);
     try {
-      const response = await axios.get("api/auth/signout");
+      const response = await axios.post("api/auth/signout");
       if (response.data.success) {
         router.push("/login");
       } else {
