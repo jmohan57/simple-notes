@@ -24,6 +24,11 @@ export async function GET(request: NextRequest) {
           message: "Invalid Token",
           success: false,
         });
+      } else {
+        return NextResponse.json({
+          message: "Sorry, some error occurred",
+          success: false,
+        });
       }
     }
   } catch (error: any) {
