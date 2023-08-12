@@ -7,6 +7,7 @@ connect();
 
 export async function GET(request: NextRequest) {
   try {
+    const token = request.cookies.get('token');
     const userId = getDataFromToken(request)?.id;
     const user = await User.findById(userId).select("-password");
 
@@ -23,7 +24,8 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({
           message: "Invalid Token",
           success: false,
-          userId: userId || null
+          userId: userId || null,
+          token: token
         });
       } else {
         return NextResponse.json({
