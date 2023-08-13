@@ -18,6 +18,7 @@ interface NoteCardProps {
 function NoteCard(props: NoteCardProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isColorMenuOpen, setIsColorMenuOpen] = useState(false);
+  const [isPlayingNote, setIsPlayingNote] = useState(false);
   const [cardColor, setCardColor] = useState<string>("bg-white");
 
   const lastEditedOn: string = `Last edited on ${formatDateTime(
@@ -71,6 +72,32 @@ function NoteCard(props: NoteCardProps) {
     updateColorInDb(color);
   };
 
+  const playNote = async () => {
+    const utterThis = new SpeechSynthesisUtterance(
+      `Note Title: ${props.note.noteTitle}, Note body: ${props.note.noteBody}`
+    );
+    window.speechSynthesis.speak(utterThis);
+    return new Promise((resolve) => {
+      utterThis.onend = resolve;
+    });
+  };
+
+  const onPlayNote = async () => {
+    setIsOpen(false);
+    if (isPlayingNote) {
+      setIsPlayingNote(false);
+      window.speechSynthesis.cancel();
+    } else {
+      if (!window.speechSynthesis.speaking) {
+        setIsPlayingNote(true);
+        const playCompleted = await playNote();
+        if (playCompleted) {
+          setIsPlayingNote(false);
+        }
+      }
+    }
+  };
+
   return (
     <div
       className={`w-full max-w-sm ${cardColor} border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700`}
@@ -106,6 +133,15 @@ function NoteCard(props: NoteCardProps) {
             } absolute mt-8 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-lg shadow-slate-400 w-44 dark:bg-gray-700`}
           >
             <ul className="py-2" aria-labelledby="dropdownButton">
+              <li>
+                <a
+                  href="#"
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                  onClick={onPlayNote}
+                >
+                  {isPlayingNote ? "Stop" : "Play"}
+                </a>
+              </li>
               <li>
                 <a
                   href="#"

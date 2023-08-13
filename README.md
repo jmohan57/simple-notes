@@ -1,4 +1,12 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This is a simple note taking web app, which stores your notes in the cloud, so that you can access them from anywhere and any device. Here you can add, edit, delete your notes, as well as change color theme of individual notes. This application also has the ability to read out your notes for you on your command.
+Happy coding.
+
+Deployed here: https://next-simple-notes.vercel.app/
+
+## Tech Stacks
+Next JS 13
+Tailwind CSS
+MongoDB
 
 ## Getting Started
 
