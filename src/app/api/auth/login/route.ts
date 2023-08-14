@@ -45,7 +45,8 @@ export async function POST(request: NextRequest) {
       fullname: user.fullname!,
     };
     const token = jwt.sign(tokenData, process.env.TOKEN_SECRET!);
-
+    const tokenExpiry = Date.now() + 168 * 60 * 60 * 1000; // 7 days
+    
     const response = NextResponse.json({
       message: "Logged in successfully !",
       status: 200,
@@ -53,6 +54,7 @@ export async function POST(request: NextRequest) {
     });
 
     response.cookies.set("token", token, {
+      expires: tokenExpiry,
       httpOnly: true,
       secure: true,
     });
