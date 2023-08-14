@@ -1,6 +1,7 @@
 {
   "name": "Simple Notes",
   "short_name": "Simple Notes",
+  "description": "This is a simple note taking web app, which stores your notes in the cloud, so that you can access them from anywhere and any device. Here you can add, edit, delete your notes, as well as change color theme of individual notes. This application also has the ability to read out your notes for you on your command.",
   "icons": [
     {
       "src": "/icon.png",
@@ -14,7 +15,7 @@
       "type": "image/png"
     }
   ],
-  "theme_color": "#FFFFFF",
+  "theme_color": "#1f2937",
   "background_color": "#FFFFFF",
   "start_url": "/",
   "display": "standalone",
