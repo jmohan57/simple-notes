@@ -173,7 +173,7 @@ function MyNotesPage() {
       {/* Create Button for Other Devices */}
       <div className="w-full hidden md:flex justify-center items-center sticky top-2 mt-4">
         <button
-          className={`z-20 flex flex-col justify-center items-center h-24 w-24 rounded-md bg-white ${
+          className={`z-20 flex flex-col justify-center items-center h-24 w-24 rounded-md bg-white dark:bg-slate-800 ${
             scrollY > 100 && "shadow-lg shadow-slate-400"
           }`}
           onClick={() => setCreateModalOpen(true)}

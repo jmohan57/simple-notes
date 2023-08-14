@@ -51,18 +51,18 @@ function NavBar(props: NavBarProps) {
                 <div
                   className={`${
                     isOpen ? "absolute" : "hidden"
-                  } right-0 z-30 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}
+                  } right-0 z-30 mt-2 w-48 origin-top-right rounded-md bg-white dark:bg-gray-600 dark:text-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}
                   role="menu"
                   aria-orientation="vertical"
                   aria-labelledby="user-menu-button"
                   tabIndex={-1}
                 >
-                  <span className="block px-4 py-2 text-sm font-bold text-gray-700">
+                  <span className="block px-4 py-2 text-sm font-bold text-gray-700 dark:text-white">
                     Hello, {props.user.fullname}
                   </span>
                   <a
                     href="#"
-                    className="block px-4 py-2 text-sm text-gray-700"
+                    className="block px-4 py-2 text-sm text-gray-700 dark:text-white"
                     role="menuitem"
                     tabIndex={-1}
                     id="user-menu-item-0"
@@ -76,7 +76,7 @@ function NavBar(props: NavBarProps) {
 
                   <a
                     href="#"
-                    className="block px-4 py-2 text-sm text-red-500 font-bold"
+                    className="block px-4 py-2 text-sm text-red-500 dark:text-red-500 font-bold"
                     role="menuitem"
                     tabIndex={-1}
                     id="user-menu-item-2"

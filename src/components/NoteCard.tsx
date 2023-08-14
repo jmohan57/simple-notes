@@ -47,19 +47,19 @@ function NoteCard(props: NoteCardProps) {
   const setColorState = (color: string) => {
     switch (color) {
       case Color.Blue:
-        setCardColor("bg-gradient-to-b from-white to-blue-300");
+        setCardColor("bg-gradient-to-b from-white to-blue-300 dark:text-black");
         break;
       case Color.Green:
-        setCardColor("bg-gradient-to-b from-white to-green-300");
+        setCardColor("bg-gradient-to-b from-white to-green-300 dark:text-black");
         break;
       case Color.Purple:
-        setCardColor("bg-gradient-to-b from-white to-purple-300");
+        setCardColor("bg-gradient-to-b from-white to-purple-300 dark:text-black");
         break;
       case Color.Red:
-        setCardColor("bg-gradient-to-b from-white to-red-300");
+        setCardColor("bg-gradient-to-b from-white to-red-300 dark:text-black");
         break;
       case Color.Yellow:
-        setCardColor("bg-gradient-to-b from-white to-yellow-300");
+        setCardColor("bg-gradient-to-b from-white to-yellow-300 dark:text-black");
         break;
       default:
         setCardColor("bg-white");
@@ -157,7 +157,7 @@ function NoteCard(props: NoteCardProps) {
               <li>
                 <a
                   href="#"
-                  className="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                  className="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-red-500 dark:hover:text-white"
                   onClick={() => {
                     props.onDeleteNote(props.note._id!);
                   }}
@@ -202,7 +202,7 @@ function NoteCard(props: NoteCardProps) {
               return (
                 <li
                   key={index}
-                  className="block px-4 py-2 text-sm cursor-pointer"
+                  className="block px-4 py-2 text-sm dark:text-white cursor-pointer"
                   onClick={() => onChangeColor(color)}
                 >
                   {color}
