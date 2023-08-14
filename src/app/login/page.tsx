@@ -112,7 +112,7 @@ function LoginPage() {
                     {isLoading ? "Loading..." : "Login"}
 
                     {isLoading ? (
-                      <AiOutlineLoading3Quarters className="ml-2 animate-spin" />
+                      <AiOutlineLoading3Quarters className="ml-2 my-2 animate-spin" />
                     ) : (
                       <CiLogin className="pl-2 w-8 h-8" />
                     )}
