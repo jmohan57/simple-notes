@@ -23,7 +23,7 @@ function LoginPage() {
       setIsLoading(true);
       const response = await axios.post("/api/auth/login", user);
       if (response.data.success) {
-        router.push("/mynotes");
+        router.push("/home");
       } else {
         setIsLoading(false);
         toast.error(`Login failed ! ${response.data.message}`);

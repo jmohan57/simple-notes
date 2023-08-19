@@ -16,7 +16,7 @@ export default function Home() {
     try {
       const response = await axios.post("/api/auth/authuser");
       if (response.data.success) {
-        router.push("/mynotes");
+        router.push("/home");
       } else {
         router.push("/login");
       }

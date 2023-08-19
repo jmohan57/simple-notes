@@ -5,9 +5,9 @@ import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Simple Notes",
+  title: "Simple Apps",
   description:
-    "A simple notes web application, which allows you to take notes and store them in the clouds, so that you can access them from anywhere and any device.",
+    "A simple apps web application, consists of two micro apps, one allows you to take notes and store them in the clouds, so that you can access them from anywhere and any device. Other one allows you to create simple kanban boards",
   manifest: "/manifest.json",
 };
 

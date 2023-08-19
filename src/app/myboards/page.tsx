@@ -1,12 +1,12 @@
 "use client";
 
-import CreateNoteModal from "@/components/CreateNoteModal";
 import MainScreenLoader from "@/components/MainScreenLoader";
+import BoardCard from "@/components/MyBoards/BoardCard";
+import CreateBoardModal from "@/components/MyBoards/CreateBoardModal";
 import NavBar from "@/components/NavBar";
-import NoteCard from "@/components/NoteCard";
 import PasswordChangeModal from "@/components/PasswordChangeModal";
 import { useWindowScrollPositions } from "@/helpers/useWindowScrollPositions";
-import { NoteInterface } from "@/types/note-interface";
+import { IBoard } from "@/types/board-interface";
 import { UserInterface } from "@/types/user-interface";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -14,17 +14,16 @@ import React, { useState, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { FaPlus } from "react-icons/fa";
 
-function MyNotesPage() {
+function MyBoardsPage() {
   const router = useRouter();
-  const [toastError, setToastError] = useState<string>("");
-  const [toastSuccess, setToastSuccess] = useState<string>("");
   const [userLoading, setUserLoading] = useState<boolean>(true);
   const [user, setUser] = useState<UserInterface>();
   const [createModalOpen, setCreateModalOpen] = useState<boolean>(false);
   const [passwordModalOpen, setPasswordModalOpen] = useState<boolean>(false);
-  const [notes, setNotes] = useState<NoteInterface[]>([]);
-  const [editNote, setEditNote] = useState<NoteInterface | null>(null);
-  const [isDeleting, setIsDeleting] = useState<boolean>(false);
+  const [boards, setBoards] = useState<IBoard[]>([]);
+  const [editBoard, setEditBoard] = useState<IBoard | null>(null);
+  const [toastError, setToastError] = useState<string>("");
+  const [toastSuccess, setToastSuccess] = useState<string>("");
   const { scrollY } = useWindowScrollPositions();
 
   // ---- useEffects Region Start ---- //
@@ -33,7 +32,7 @@ function MyNotesPage() {
   }, []);
 
   useEffect(() => {
-    getMyNotes();
+    getMyBoards();
   }, [user]);
 
   useEffect(() => {
@@ -72,23 +71,25 @@ function MyNotesPage() {
     }
   };
 
-  const getMyNotes = async () => {
+  const getMyBoards = async () => {
     if (user) {
       try {
-        const response = await axios.post("/api/notes/fetch", {
+        const response = await axios.post("/api/boards/fetch", {
           createdBy: user.username,
         });
         if (response.data.success) {
-          let notesArr: NoteInterface[] = response.data.resultObject;
-          notesArr = notesArr.reverse();
-          setNotes(notesArr);
+          let boardsArr: IBoard[] = response.data.resultObject;
+          const pinnedBoards = boardsArr.filter((board) => board.pinned);
+          const unpinnedBoards = boardsArr.filter((board) => !board.pinned);
+
+          setBoards([...pinnedBoards, ...unpinnedBoards]);
         } else {
           setUserLoading(false);
-          setToastError("Error fetching notes");
+          setToastError("Error fetching boards");
         }
       } catch (error) {
         setUserLoading(false);
-        setToastError("Error fetching notes");
+        setToastError("Error fetching boards");
       } finally {
         setUserLoading(false);
       }
@@ -109,50 +110,57 @@ function MyNotesPage() {
     }
   };
 
-  const onNoteSave = (newlyAddedNote: NoteInterface) => {
+  const handleBoardSave = (newlyAddedBoard: IBoard) => {
     setCreateModalOpen(false);
-    setToastSuccess("Note Saved !");
-    setEditNote(null);
+    setToastSuccess("Board Saved !");
+    setEditBoard(null);
 
-    let newNotes = [...notes];
-    const ifExists = newNotes.find((note) => note._id === newlyAddedNote._id);
+    let newBoards = [...boards];
+    const ifExists = newBoards.find(
+      (board) => board._id === newlyAddedBoard._id
+    );
     if (ifExists) {
-      newNotes.splice(newNotes.indexOf(ifExists), 1, newlyAddedNote);
+      newBoards.splice(newBoards.indexOf(ifExists), 1, newlyAddedBoard);
     } else {
-      newNotes.unshift(newlyAddedNote);
+      const pinnedBoards = newBoards.filter((board) => board.pinned);
+      const unpinnedBoards = newBoards.filter((board) => !board.pinned);
+      unpinnedBoards.unshift(newlyAddedBoard);
+      newBoards = [...pinnedBoards, ...unpinnedBoards];
     }
-    setNotes(newNotes);
+    setBoards(newBoards);
   };
 
-  const onEditNote = (note: NoteInterface) => {
-    setEditNote(note);
-    setCreateModalOpen(true);
-  };
+  const handleTogglePin = async (changedValue: boolean, boardId: string) => {
+    let updatedBoard: IBoard = boards.find((board) => board._id === boardId)!;
 
-  const onDeleteNote = async (noteId: string) => {
-    setIsDeleting(true);
-    setCreateModalOpen(true);
+    const newBoardsArray = [...boards];
+    newBoardsArray.splice(newBoardsArray.indexOf(updatedBoard!), 1);
+
+    updatedBoard = { ...updatedBoard, pinned: changedValue };
+
+    const pinnedBoards = newBoardsArray.filter((board) => board.pinned);
+    const unpinnedBoards = newBoardsArray.filter((board) => !board.pinned);
+    if (changedValue) {
+      pinnedBoards.unshift(updatedBoard);
+    } else {
+      unpinnedBoards.unshift(updatedBoard);
+    }
+    setBoards([...pinnedBoards, ...unpinnedBoards]);
 
     try {
-      const response = await axios.post("/api/notes/delete", { _id: noteId });
-
+      const response = await axios.post("/api/boards/pintoggle", {
+        pinned: changedValue,
+        _id: boardId,
+      });
       if (response.data.success) {
-        setIsDeleting(false);
-        setCreateModalOpen(false);
-
-        const updatedNotes = notes.filter((note) => note._id !== noteId);
-        setNotes(updatedNotes);
-
-        setToastSuccess("Note deleted !");
+        setToastSuccess(
+          `${changedValue ? "Board pinned to top !" : "Board unpinned !"}`
+        );
       } else {
-        setIsDeleting(false);
-        setCreateModalOpen(false);
-        setToastError("Error deleting note !");
+        setToastError(response.data.error + " Operation could not be saved !");
       }
     } catch (error) {
-      setCreateModalOpen(false);
-      setIsDeleting(false);
-      setToastError("Error deleting note !");
+      setToastError("Something went wrong, operation could not be saved !");
     }
   };
 
@@ -168,7 +176,26 @@ function MyNotesPage() {
         user={user!}
         onPasswordChange={() => setPasswordModalOpen(true)}
         isSigningOut={handleSigningOut}
-        switchPageOption={{ title: "My Boards", path: "/myboards" }}
+        switchPageOption={{ title: "My Notes", path: "/mynotes" }}
+      />
+
+      <PasswordChangeModal
+        isOpen={passwordModalOpen}
+        onClose={() => setPasswordModalOpen(false)}
+        onSave={() => {
+          setPasswordModalOpen(false);
+          setToastSuccess("Password updated !");
+        }}
+        username={user.username!}
+      />
+
+      <CreateBoardModal
+        editBoard={null}
+        isDeleting={false}
+        isOpen={createModalOpen}
+        onClose={() => setCreateModalOpen(false)}
+        onSave={handleBoardSave}
+        username={user.username!}
       />
 
       {/* Create Button for Other Devices */}
@@ -184,44 +211,15 @@ function MyNotesPage() {
         </button>
       </div>
 
-      <PasswordChangeModal
-        isOpen={passwordModalOpen}
-        onClose={() => setPasswordModalOpen(false)}
-        onSave={() => {
-          setPasswordModalOpen(false);
-          setToastSuccess("Password updated !");
-        }}
-        username={user.username!}
-      />
-
-      <CreateNoteModal
-        editNote={editNote}
-        isDeleting={isDeleting}
-        isOpen={createModalOpen}
-        onClose={() => {
-          setCreateModalOpen(false);
-          setEditNote(null);
-        }}
-        onSave={onNoteSave}
-        username={user.username!}
-      />
-
       {/* Cards Container */}
       <div
         className={`w-full p-6 flex flex-col flex-wrap md:flex-row justify-center items-center md:justify-evenly gap-4`}
       >
         <Toaster />
 
-        {/* Notes Cards */}
-        {notes.map((note) => {
-          return (
-            <NoteCard
-              key={note._id}
-              onDeleteNote={onDeleteNote}
-              onEditNote={onEditNote}
-              note={note}
-            />
-          );
+        {/* Boards Cards */}
+        {boards.map((board) => {
+          return <BoardCard boardData={board} onTogglePin={handleTogglePin} />;
         })}
       </div>
 
@@ -238,4 +236,4 @@ function MyNotesPage() {
   );
 }
 
-export default MyNotesPage;
+export default MyBoardsPage;
