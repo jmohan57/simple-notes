@@ -219,7 +219,13 @@ function MyBoardsPage() {
 
         {/* Boards Cards */}
         {boards.map((board) => {
-          return <BoardCard boardData={board} onTogglePin={handleTogglePin} />;
+          return (
+            <BoardCard
+              key={board._id}
+              boardData={board}
+              onTogglePin={handleTogglePin}
+            />
+          );
         })}
       </div>
 

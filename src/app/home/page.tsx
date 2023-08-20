@@ -104,9 +104,10 @@ function HomePage() {
         <Toaster />
 
         {/* App Cards */}
-        {appCards.map((card) => {
+        {appCards.map((card, i) => {
           return (
             <AppCard
+              key={i}
               title={card.title}
               description={card.description}
               path={card.path}
