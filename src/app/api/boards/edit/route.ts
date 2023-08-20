@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
     const reqBody = await request.json();
     const { boardName, boardDescription, boardBackground, _id } = reqBody;
 
-    // Find the note by id
+    // Find the board by id
     const board = await Board.findById(_id);
 
     if (!board) {
@@ -20,14 +20,14 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Update the note
+    // Update the board
     board.boardName = boardName;
     board.boardDescription = boardDescription;
     board.boardBackground = boardBackground;
     board.lastEditedOn = Date.now();
     const updatedBoard = await board.save();
 
-    // return the updated note
+    // return the updated board
     return NextResponse.json({
       message: "Board updated successfully !",
       status: 200,

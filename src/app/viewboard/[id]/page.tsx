@@ -1,18 +1,19 @@
 "use client";
 
 import MainScreenLoader from "@/components/MainScreenLoader";
+import DeleteBoardModal from "@/components/MyBoards/DeleteBoardModal";
+import BoardLists from "@/components/MyBoards/BoardLists";
 import NavBar from "@/components/NavBar";
 import PasswordChangeModal from "@/components/PasswordChangeModal";
+import { boardBgColors } from "@/helpers/colorArray";
 import { IBoard } from "@/types/board-interface";
 import { UserInterface } from "@/types/user-interface";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
-import { AiFillDelete } from "react-icons/ai";
 import toast, { Toaster } from "react-hot-toast";
+import { AiFillDelete } from "react-icons/ai";
 import { FaCheck } from "react-icons/fa";
-import DeleteBoardModal from "@/components/MyBoards/DeleteBoardModal";
-import { boardBgColors } from "@/helpers/colorArray";
 
 function ViewBoardPage({ params }: { params: { id: string } }) {
   const router = useRouter();
@@ -134,7 +135,7 @@ function ViewBoardPage({ params }: { params: { id: string } }) {
 
   return !userLoading && user && boardData ? (
     <div
-      className={`w-full h-full min-h-screen bg-gradient-to-b from-slate-500 to-slate-800`}
+      className={`w-full min-h-screen bg-gradient-to-b from-slate-500 to-slate-800`}
     >
       <NavBar
         user={user!}
@@ -161,12 +162,12 @@ function ViewBoardPage({ params }: { params: { id: string } }) {
 
       {/* Board Container */}
       <div
-        className={`w-full min-h-[90vh] lg:min-h-[89vh] overflow-hidden ${boardData.boardBackground} opacity-70 flex flex-col items-start`}
+        className={`w-full bg-repeat ${boardData.boardBackground} opacity-70 flex flex-col items-start`}
       >
         <Toaster />
 
         {/* Boards Name and Other Options */}
-        <div className="h-12 w-full sm:text-lg md:text-xl bg-black bg-opacity-70 text-white flex justify-between items-center p-2 md:p-6">
+        <div className="h-12 w-full sm:text-lg md:text-xl bg-black bg-opacity-60 text-white flex justify-between items-center p-2 md:p-6">
           <span className="font-bold gap-2 flex items-center">
             <input
               type="text"
@@ -222,6 +223,9 @@ function ViewBoardPage({ params }: { params: { id: string } }) {
             />
           </span>
         </div>
+
+        {/* Board main work area with Lists and Tasks */}
+        <BoardLists boardId={boardData._id!} />
       </div>
     </div>
   ) : (
