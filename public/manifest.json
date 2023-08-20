@@ -1,7 +1,7 @@
 {
-  "name": "Simple Notes",
-  "short_name": "Simple Notes",
-  "description": "This is a simple note taking web app, which stores your notes in the cloud, so that you can access them from anywhere and any device. Here you can add, edit, delete your notes, as well as change color theme of individual notes. This application also has the ability to read out your notes for you on your command.",
+  "name": "Simple Apps",
+  "short_name": "Simple Apps",
+  "description": "This is a simple web app with built-in features like Notes and Kanban boards. It stores all your notes and boards in the cloud, so that you can access them from anywhere and any device.",
   "icons": [
     {
       "src": "/icon.png",

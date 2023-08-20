@@ -62,7 +62,7 @@ function SignupPage() {
         <div className="relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:px-20 sm:py-10">
           <div className="max-w-md mx-auto">
             <div>
-              <h1 className="text-2xl font-semibold">Simple Notes</h1>
+              <h1 className="text-2xl font-semibold">Simple Apps</h1>
             </div>
             <div className="divide-y divide-gray-200">
               <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
