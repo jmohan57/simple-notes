@@ -173,7 +173,7 @@ function ViewBoardPage({ params }: { params: { id: string } }) {
           <span className="font-bold gap-2 flex items-center">
             <input
               type="text"
-              className={`rounded-md px-1 ${
+              className={`rounded-md px-1 w-[60%] ${
                 isEditingName ? "bg-white text-black" : "bg-transparent"
               } outline-none ${!isEditingName && "cursor-pointer"} ${
                 inputError && "border-2 border-red-600"
@@ -187,8 +187,8 @@ function ViewBoardPage({ params }: { params: { id: string } }) {
               value={
                 isEditingName
                   ? boardData.boardName
-                  : boardData.boardName.length > 25
-                  ? boardData.boardName.slice(0, 25) + " ..."
+                  : boardData.boardName.length > 12
+                  ? boardData.boardName.slice(0, 12) + " ..."
                   : boardData.boardName
               }
             />
