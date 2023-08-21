@@ -103,7 +103,7 @@ function CardModal(props: CardModalProps) {
             <span className="flex w-full justify-start items-center gap-2">
               <AiOutlineCreditCard className="w-6 h-6" />
               <input
-                className="text-xl font-semibold"
+                className="text-xl font-semibold bg-white dark:bg-slate-800 text-black dark:text-white"
                 maxLength={34}
                 value={cardTitle}
                 onChange={(e) => setCardTitle(e.target.value)}

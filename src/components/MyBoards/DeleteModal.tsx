@@ -57,7 +57,9 @@ const DeleteModal = (props: DeleteModalProps) => {
       <div className="bg-white dark:bg-slate-800 p-6 rounded shadow-md z-10">
         {!isDeleting && !deleteComplete ? (
           <>
-            <h2 className="text-lg font-semibold mb-4">Confirm Delete</h2>
+            <h2 className="text-lg font-semibold mb-4 text-black dark:text-white">
+              Confirm Delete
+            </h2>
             <p className="text-gray-700 dark:text-white mb-6">
               Are you sure you want to delete this {props.delete}?
             </p>
