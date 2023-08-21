@@ -19,12 +19,14 @@ interface CardModalProps {
 }
 
 function CardModal(props: CardModalProps) {
+  const [cardTitle, setCardTitle] = useState("");
   const [cardDescription, setCardDescription] = useState("");
   const [editDescription, setEditDescription] = useState<boolean>(false);
   const [sureDelete, setSureDelete] = useState<boolean>(false);
 
   useEffect(() => {
     if (props.card) {
+      setCardTitle(props.card.cardTitle!);
       setCardDescription(props.card.cardDescription!);
       setEditDescription(props.card.cardDescription!.length === 0);
     }
@@ -37,12 +39,43 @@ function CardModal(props: CardModalProps) {
       return;
     }
 
-    const updatedCard = { ...props.card, cardDescription: cardDescription };
+    let updatedCard;
+    if (
+      cardTitle.trim().length > 0 &&
+      cardTitle !== props.card.cardDescription
+    ) {
+      updatedCard = { ...props.card, cardTitle, cardDescription };
+    } else {
+      updatedCard = { ...props.card, cardTitle };
+    }
+
     props.onUpdateCardDetails(updatedCard);
     setEditDescription(false);
   };
 
+  const onUpdateTitle = () => {
+    if (cardTitle.trim().length === 0) {
+      setCardTitle(props.card.cardTitle!);
+      return;
+    }
+    if (cardTitle === props.card.cardTitle) return;
+
+    let updatedCard;
+    if (
+      cardDescription.trim().length > 0 &&
+      cardDescription !== props.card.cardDescription &&
+      !editDescription
+    ) {
+      updatedCard = { ...props.card, cardTitle, cardDescription };
+    } else {
+      updatedCard = { ...props.card, cardTitle };
+    }
+
+    props.onUpdateCardDetails(updatedCard);
+  };
+
   const onClose = () => {
+    setCardTitle("");
     setCardDescription("");
     setEditDescription(false);
     setSureDelete(false);
@@ -69,7 +102,13 @@ function CardModal(props: CardModalProps) {
             {/* Title Section */}
             <span className="flex w-full justify-start items-center gap-2">
               <AiOutlineCreditCard className="w-6 h-6" />
-              <h2 className="text-xl font-semibold">{props.card.cardTitle}</h2>
+              <input
+                className="text-xl font-semibold"
+                maxLength={34}
+                value={cardTitle}
+                onChange={(e) => setCardTitle(e.target.value)}
+                onBlur={onUpdateTitle}
+              />
             </span>
             <h5 className="text-sm ml-8">
               in list <b>{props.listTitle}</b>
