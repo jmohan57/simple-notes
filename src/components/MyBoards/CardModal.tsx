@@ -103,7 +103,7 @@ function CardModal(props: CardModalProps) {
             <span className="flex w-full justify-start items-center gap-2">
               <AiOutlineCreditCard className="w-6 h-6" />
               <input
-                className="text-xl font-semibold bg-white dark:bg-slate-800 text-black dark:text-white"
+                className="w-[90%] text-xl font-semibold bg-white dark:bg-slate-800 text-black dark:text-white"
                 maxLength={34}
                 value={cardTitle}
                 onChange={(e) => setCardTitle(e.target.value)}
@@ -124,12 +124,12 @@ function CardModal(props: CardModalProps) {
                 <textarea
                   rows={4}
                   maxLength={300}
-                  className="w-[70%] border border-blue-500 p-2 outline-none resize-none ml-8 rounded-md dark:bg-gray-600"
+                  className="w-[90%] border border-blue-500 p-2 outline-none resize-none ml-8 rounded-md dark:bg-gray-600"
                   placeholder="Write a meaningful description"
                   value={cardDescription}
                   onChange={(e) => setCardDescription(e.target.value)}
                 />
-                <span className="flex w-[70%] justify-between ml-8">
+                <span className="flex w-[90%] justify-between ml-8">
                   <button
                     className="bg-blue-500 hover:bg-blue-600 text-white mt-1 px-3 py-1 rounded-md w-fit"
                     onClick={onSaveDescription}
@@ -142,7 +142,7 @@ function CardModal(props: CardModalProps) {
             )}
             {!editDescription && (
               <p
-                className="ml-8 w-[70%] text-black dark:text-white cursor-pointer"
+                className="ml-8 w-[90%] text-black dark:text-white cursor-pointer"
                 onClick={() => setEditDescription(true)}
               >
                 {cardDescription}
