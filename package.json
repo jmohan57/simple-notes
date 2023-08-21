@@ -1,6 +1,6 @@
 {
-  "name": "simple-notes",
-  "version": "0.1.0",
+  "name": "simple-apps",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
