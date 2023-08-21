@@ -7,7 +7,7 @@ import { FaArrowRight } from "react-icons/fa";
 const AppCard = ({ title, description, path }: AppCard) => {
   const router = useRouter();
   return (
-    <div className="bg-white dark:bg-slate-800 w-[400px] rounded-lg shadow-lg overflow-hidden min-w-[300px] min-h-16">
+    <div className="bg-white dark:bg-slate-800 w-full md:w-[400px] rounded-lg shadow-lg overflow-hidden min-w-[300px] min-h-16">
       <div className="p-4">
         <h2 className="text-xl font-medium">{title}</h2>
         <p className="mt-4 text-gray-600 dark:text-gray-200">{description}</p>

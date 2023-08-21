@@ -1,3 +1,4 @@
+import { AddListItem } from "@/types/add-list-item-enum";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -5,13 +6,15 @@ import toast, { Toaster } from "react-hot-toast";
 import { BiLoaderAlt } from "react-icons/bi";
 import { ImCheckmark } from "react-icons/im";
 
-interface DeleteBoardModalProps {
-  boardId: string;
+interface DeleteModalProps {
+  boardId?: string;
+  delete: AddListItem;
+  listId?: string;
   isOpen: boolean;
-  onClose: () => void;
+  onClose: (reload: boolean) => void;
 }
 
-const DeleteBoardModal = (props: DeleteBoardModalProps) => {
+const DeleteModal = (props: DeleteModalProps) => {
   const router = useRouter();
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteComplete, setDeleteComplete] = useState(false);
@@ -19,8 +22,15 @@ const DeleteBoardModal = (props: DeleteBoardModalProps) => {
   const onDelete = async () => {
     setIsDeleting(true);
     try {
-      const response = await axios.post("/api/boards/delete", {
-        _id: props.boardId,
+      let API_URL = "";
+      if (props.delete === AddListItem.Board) {
+        API_URL = "/api/boards/delete";
+      } else {
+        API_URL = "/api/boards/deletelist";
+      }
+
+      const response = await axios.post(API_URL, {
+        _id: props.delete === AddListItem.Board ? props.boardId : props.listId,
       });
 
       if (response.data.success) {
@@ -49,12 +59,12 @@ const DeleteBoardModal = (props: DeleteBoardModalProps) => {
           <>
             <h2 className="text-lg font-semibold mb-4">Confirm Delete</h2>
             <p className="text-gray-700 dark:text-white mb-6">
-              Are you sure you want to delete this board?
+              Are you sure you want to delete this {props.delete}?
             </p>
             <div className="flex justify-end">
               <button
                 className="bg-gray-300 hover:bg-gray-400 text-black px-4 py-2 rounded mr-2"
-                onClick={props.onClose}
+                onClick={() => props.onClose(false)}
               >
                 Cancel
               </button>
@@ -76,12 +86,19 @@ const DeleteBoardModal = (props: DeleteBoardModalProps) => {
             ) : (
               <>
                 <ImCheckmark className="h-8 w-8" />
-                <h1 className="text-xl font-semibold mx-4">Board Deleted</h1>
+                <h1 className="text-xl font-semibold mx-4">
+                  {props.delete === AddListItem.Board ? "Board" : "List"}{" "}
+                  Deleted
+                </h1>
                 <button
                   className="bg-green-500 hover:bg-green-600 text-white rounded-md px-3 py-1"
-                  onClick={() => router.push("/myboards")}
+                  onClick={() =>
+                    props.delete === AddListItem.Board
+                      ? router.push("/myboards")
+                      : props.onClose(true)
+                  }
                 >
-                  My Boards
+                  Continue
                 </button>
               </>
             )}
@@ -92,4 +109,4 @@ const DeleteBoardModal = (props: DeleteBoardModalProps) => {
   );
 };
 
-export default DeleteBoardModal;
+export default DeleteModal;

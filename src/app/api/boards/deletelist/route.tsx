@@ -1,5 +1,4 @@
 import { connect } from "@/dbconfig/dbConfig";
-import Board from "@/models/boardModel";
 import List from "@/models/listModel";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -10,26 +9,23 @@ export async function POST(request: NextRequest) {
     const reqBody = await request.json();
     const { _id } = reqBody;
 
-    // Delete the board by id
-    const board = await Board.deleteOne({ _id });
+    // Delete the list by id
+    const list = await List.deleteOne({ _id });
 
-    if (!board) {
+    if (!list) {
       return NextResponse.json({
-        message: "Board not found !",
+        message: "List not found !",
         status: 400,
         success: false,
       });
     }
 
-    // Delete the associated lists
-    const lists = await List.deleteMany({ boardId: _id });
-
     // return the success message
     return NextResponse.json({
-      message: "Board deleted successfully !",
+      message: "List deleted successfully !",
       status: 200,
       success: true,
-      resultObject: board,
+      resultObject: list,
     });
   } catch (error) {
     return NextResponse.json({

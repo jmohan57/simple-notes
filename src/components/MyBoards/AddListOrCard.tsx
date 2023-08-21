@@ -36,11 +36,11 @@ const AddListOrCard = (props: AddListOrCardProps) => {
     <div
       className={`${
         props.add === AddListItem.List ? "w-60" : "w-full"
-      } flex shrink-0 h-fit bg-slate-800 text-white rounded-lg`}
+      } flex shrink-0 h-fit bg-slate-800 dark:bg-gray-600 text-white rounded-lg`}
     >
       {isInputVisible ? (
         <div
-          className={`bg-slate-800 rounded-lg shadow w-full ${
+          className={`bg-slate-800 dark:bg-gray-600 rounded-lg shadow w-full ${
             props.add === AddListItem.List ? "p-2" : ""
           }`}
         >
@@ -69,7 +69,7 @@ const AddListOrCard = (props: AddListOrCardProps) => {
         </div>
       ) : (
         <button
-          className="block w-full text-left p-2 text-white bg-slate-800 hover:bg-slate-600 rounded-lg"
+          className="block w-full text-left p-2 text-white bg-slate-800 dark:bg-gray-600 hover:bg-slate-600 rounded-lg"
           onClick={toggleInputVisibility}
         >
           + Add a {props.add}

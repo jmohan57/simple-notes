@@ -1,7 +1,7 @@
 "use client";
 
 import MainScreenLoader from "@/components/MainScreenLoader";
-import DeleteBoardModal from "@/components/MyBoards/DeleteBoardModal";
+import DeleteModal from "@/components/MyBoards/DeleteModal";
 import BoardLists from "@/components/MyBoards/BoardLists";
 import NavBar from "@/components/NavBar";
 import PasswordChangeModal from "@/components/PasswordChangeModal";
@@ -14,6 +14,7 @@ import React, { useState, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { AiFillDelete } from "react-icons/ai";
 import { FaCheck } from "react-icons/fa";
+import { AddListItem } from "@/types/add-list-item-enum";
 
 function ViewBoardPage({ params }: { params: { id: string } }) {
   const router = useRouter();
@@ -154,8 +155,9 @@ function ViewBoardPage({ params }: { params: { id: string } }) {
         username={user.username!}
       />
 
-      <DeleteBoardModal
+      <DeleteModal
         boardId={boardId}
+        delete={AddListItem.Board}
         isOpen={deleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
       />
@@ -225,7 +227,7 @@ function ViewBoardPage({ params }: { params: { id: string } }) {
         </div>
 
         {/* Board main work area with Lists and Tasks */}
-        <BoardLists boardId={boardData._id!} />
+        <BoardLists boardData={boardData} />
       </div>
     </div>
   ) : (
