@@ -189,7 +189,7 @@ function CardModal(props: CardModalProps) {
             </h5>
           </span>
 
-          <span className="flex flex-col w-full max-h-[65vh] overflow-y-auto scrollbar-none gap-2 dark:text-white">
+          <span className="flex flex-col w-[95%] max-h-[65vh] overflow-y-auto gap-2 dark:text-white">
             {/* Description */}
             <span className="flex w-full justify-start items-center gap-2 mt-6">
               <CgDetailsMore className="w-6 h-6" />
