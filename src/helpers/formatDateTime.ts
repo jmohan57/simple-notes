@@ -1,6 +1,6 @@
-export const formatDateTime = (date: string): string => {
+export const formatDateTime = (date: string | Date): string => {
   const today = new Date();
-  const noteDate = new Date(date);
+  const noteDate = typeof date === "string" ? new Date(date) : date;
   const lastEditedOnDate = noteDate.getDate();
   const lastEditedOnTime = noteDate.toLocaleString("en-US", {
     timeStyle: "short",

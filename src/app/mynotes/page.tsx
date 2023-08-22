@@ -11,13 +11,12 @@ import { UserInterface } from "@/types/user-interface";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
-import toast, { Toaster } from "react-hot-toast";
 import { FaPlus } from "react-icons/fa";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function MyNotesPage() {
   const router = useRouter();
-  const [toastError, setToastError] = useState<string>("");
-  const [toastSuccess, setToastSuccess] = useState<string>("");
   const [userLoading, setUserLoading] = useState<boolean>(true);
   const [user, setUser] = useState<UserInterface>();
   const [createModalOpen, setCreateModalOpen] = useState<boolean>(false);
@@ -35,26 +34,6 @@ function MyNotesPage() {
   useEffect(() => {
     getMyNotes();
   }, [user]);
-
-  useEffect(() => {
-    if (toastError.length) {
-      toast.error(toastError);
-    }
-
-    return () => {
-      setToastError("");
-    };
-  }, [toastError]);
-
-  useEffect(() => {
-    if (toastSuccess.length) {
-      toast.success(toastSuccess);
-    }
-
-    return () => {
-      setToastSuccess("");
-    };
-  }, [toastSuccess]);
 
   // ---- useEffects Region End ---- //
 
@@ -84,11 +63,11 @@ function MyNotesPage() {
           setNotes(notesArr);
         } else {
           setUserLoading(false);
-          setToastError("Error fetching notes");
+          toast.error("Error fetching notes");
         }
       } catch (error) {
         setUserLoading(false);
-        setToastError("Error fetching notes");
+        toast.error("Error fetching notes");
       } finally {
         setUserLoading(false);
       }
@@ -111,7 +90,7 @@ function MyNotesPage() {
 
   const onNoteSave = (newlyAddedNote: NoteInterface) => {
     setCreateModalOpen(false);
-    setToastSuccess("Note Saved !");
+    toast.success("Note Saved !");
     setEditNote(null);
 
     let newNotes = [...notes];
@@ -143,16 +122,16 @@ function MyNotesPage() {
         const updatedNotes = notes.filter((note) => note._id !== noteId);
         setNotes(updatedNotes);
 
-        setToastSuccess("Note deleted !");
+        toast.success("Note deleted !");
       } else {
         setIsDeleting(false);
         setCreateModalOpen(false);
-        setToastError("Error deleting note !");
+        toast.error("Error deleting note !");
       }
     } catch (error) {
       setCreateModalOpen(false);
       setIsDeleting(false);
-      setToastError("Error deleting note !");
+      toast.error("Error deleting note !");
     }
   };
 
@@ -164,6 +143,7 @@ function MyNotesPage() {
         createModalOpen && "fixed"
       }`}
     >
+      <ToastContainer position="top-center" />
       <NavBar
         user={user!}
         onPasswordChange={() => setPasswordModalOpen(true)}
@@ -189,7 +169,7 @@ function MyNotesPage() {
         onClose={() => setPasswordModalOpen(false)}
         onSave={() => {
           setPasswordModalOpen(false);
-          setToastSuccess("Password updated !");
+          toast.success("Password updated !");
         }}
         username={user.username!}
       />
@@ -210,8 +190,6 @@ function MyNotesPage() {
       <div
         className={`w-full p-6 flex flex-col flex-wrap md:flex-row justify-center items-center md:justify-evenly gap-4`}
       >
-        <Toaster />
-
         {/* Notes Cards */}
         {notes.map((note) => {
           return (

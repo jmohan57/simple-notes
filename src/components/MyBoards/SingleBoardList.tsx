@@ -7,7 +7,6 @@ import { IList } from "@/types/list-interface";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
-import toast from "react-hot-toast";
 import { MdDelete } from "react-icons/md";
 import DeleteModal from "@/components/MyBoards/DeleteModal";
 import CardModal from "./CardModal";
@@ -16,6 +15,7 @@ interface SingleBoardListProps {
   listData: IList;
   onUpdateList: (updatedListData: IList) => void;
   reloadList: () => void;
+  showErrorToast: (message: string) => void;
 }
 
 function SingleBoardList(props: SingleBoardListProps) {
@@ -56,10 +56,10 @@ function SingleBoardList(props: SingleBoardListProps) {
         );
         props.onUpdateList(response.data.resultObject);
       } else {
-        toast.error("Could not add card");
+        props.showErrorToast("Could not add card");
       }
     } catch (error) {
-      toast.error("Could not add card");
+      props.showErrorToast("Could not add card");
     }
   };
 
@@ -68,10 +68,10 @@ function SingleBoardList(props: SingleBoardListProps) {
       const response = await axios.post("/api/boards/updatelist", list);
 
       if (!response.data.success) {
-        toast.error("Could not update list");
+        props.showErrorToast("Could not sync data to server");
       }
     } catch (error) {
-      toast.error("Could not update list");
+      props.showErrorToast("Could not sync data to server");
     }
   };
 

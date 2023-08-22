@@ -6,8 +6,8 @@ import { Color } from "@/types/color-enum";
 import { NoteInterface } from "@/types/note-interface";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import toast, { Toaster } from "react-hot-toast";
 import { IoMdColorPalette } from "react-icons/io";
+import { toast } from "react-toastify";
 
 interface NoteCardProps {
   onDeleteNote: (noteId: string) => void;
@@ -50,16 +50,22 @@ function NoteCard(props: NoteCardProps) {
         setCardColor("bg-gradient-to-b from-white to-blue-300 dark:text-black");
         break;
       case Color.Green:
-        setCardColor("bg-gradient-to-b from-white to-green-300 dark:text-black");
+        setCardColor(
+          "bg-gradient-to-b from-white to-green-300 dark:text-black"
+        );
         break;
       case Color.Purple:
-        setCardColor("bg-gradient-to-b from-white to-purple-300 dark:text-black");
+        setCardColor(
+          "bg-gradient-to-b from-white to-purple-300 dark:text-black"
+        );
         break;
       case Color.Red:
         setCardColor("bg-gradient-to-b from-white to-red-300 dark:text-black");
         break;
       case Color.Yellow:
-        setCardColor("bg-gradient-to-b from-white to-yellow-300 dark:text-black");
+        setCardColor(
+          "bg-gradient-to-b from-white to-yellow-300 dark:text-black"
+        );
         break;
       default:
         setCardColor("bg-white");
@@ -102,7 +108,6 @@ function NoteCard(props: NoteCardProps) {
     <div
       className={`w-full max-w-sm ${cardColor} border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700`}
     >
-      <Toaster />
       <div className="w-full flex justify-between items-center">
         <h1 className="px-4 pt-4 font-bold text-xl">{props.note.noteTitle}</h1>
         {/* Dropdown Section */}

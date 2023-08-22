@@ -9,7 +9,8 @@ import { UserInterface } from "@/types/user-interface";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function HomePage() {
   const router = useRouter();
@@ -81,6 +82,7 @@ function HomePage() {
     <div
       className={`w-full h-full min-h-screen bg-gradient-to-b from-slate-500 to-slate-800`}
     >
+      <ToastContainer position="top-center" />
       <NavBar
         user={user!}
         onPasswordChange={() => setPasswordModalOpen(true)}
@@ -101,8 +103,6 @@ function HomePage() {
       <div
         className={`w-full p-6 flex flex-col flex-wrap md:flex-row justify-center items-center md:justify-evenly gap-4`}
       >
-        <Toaster />
-
         {/* App Cards */}
         {appCards.map((card, i) => {
           return (

@@ -11,9 +11,9 @@ import { IList } from "@/types/list-interface";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
-import { Toaster, toast } from "react-hot-toast";
 import { FaSpinner } from "react-icons/fa";
 import { TfiReload } from "react-icons/tfi";
+import { toast } from 'react-toastify';
 
 interface BoardListsProps {
   boardData: IBoard;
@@ -162,7 +162,6 @@ function BoardLists(props: BoardListsProps) {
 
   return (
     <div className="w-full min-h-[calc(100vh-7rem)] flex p-6 justify-start overflow-x-auto gap-4">
-      <Toaster />
       {!listsLoading && lists && (
         <>
           <DragDropContext onDragEnd={handleDragNDrop}>
@@ -174,6 +173,7 @@ function BoardLists(props: BoardListsProps) {
                     listData={list}
                     onUpdateList={handleListUpdate}
                     reloadList={() => getLists()}
+                    showErrorToast={(message) => toast.error(message)}
                   />
                 );
               })}

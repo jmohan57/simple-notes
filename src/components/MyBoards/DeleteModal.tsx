@@ -2,9 +2,9 @@ import { AddListItem } from "@/types/add-list-item-enum";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
 import { BiLoaderAlt } from "react-icons/bi";
 import { ImCheckmark } from "react-icons/im";
+import { toast } from "react-toastify";
 
 interface DeleteModalProps {
   boardId?: string;
@@ -52,7 +52,6 @@ const DeleteModal = (props: DeleteModalProps) => {
         props.isOpen ? "flex" : "hidden"
       } items-center justify-center z-50`}
     >
-      <Toaster />
       <div className="fixed inset-0 bg-slate-800 opacity-90"></div>
       <div className="bg-white dark:bg-slate-800 p-6 rounded shadow-md z-10">
         {!isDeleting && !deleteComplete ? (

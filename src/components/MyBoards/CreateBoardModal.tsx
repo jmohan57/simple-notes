@@ -5,9 +5,9 @@ import { IBoard } from "@/types/board-interface";
 import { Color } from "@/types/color-enum";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
 import { BiLoaderAlt } from "react-icons/bi";
 import BoardColorSelector from "./BoardColorSelector";
+import { toast } from "react-toastify";
 
 interface CreateBoardModalProps {
   editBoard: IBoard | null;
@@ -82,7 +82,6 @@ function CreateBoardModal(props: CreateBoardModalProps) {
       role="dialog"
       aria-modal="true"
     >
-      <Toaster />
       <div className="fixed inset-0 bg-slate-800 bg-opacity-95 transition-opacity"></div>
 
       <div className="fixed inset-0 z-10 overflow-y-auto">

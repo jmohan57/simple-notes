@@ -11,10 +11,11 @@ import { UserInterface } from "@/types/user-interface";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
-import toast, { Toaster } from "react-hot-toast";
 import { AiFillDelete } from "react-icons/ai";
 import { FaCheck } from "react-icons/fa";
 import { AddListItem } from "@/types/add-list-item-enum";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function ViewBoardPage({ params }: { params: { id: string } }) {
   const router = useRouter();
@@ -138,6 +139,7 @@ function ViewBoardPage({ params }: { params: { id: string } }) {
     <div
       className={`w-full min-h-screen bg-gradient-to-b from-slate-500 to-slate-800`}
     >
+      <ToastContainer position="top-center" />
       <NavBar
         user={user!}
         onPasswordChange={() => setPasswordModalOpen(true)}
@@ -166,8 +168,6 @@ function ViewBoardPage({ params }: { params: { id: string } }) {
       <div
         className={`w-full bg-repeat ${boardData.boardBackground} opacity-70 flex flex-col items-start`}
       >
-        <Toaster />
-
         {/* Boards Name and Other Options */}
         <div className="h-12 w-full sm:text-lg md:text-xl bg-black bg-opacity-60 text-white flex justify-between items-center p-2 md:p-6">
           <span className="font-bold gap-2 flex items-center">
@@ -220,7 +220,7 @@ function ViewBoardPage({ params }: { params: { id: string } }) {
             </select>
             <AiFillDelete
               title="Delete Board"
-              className="cursor-pointer"
+              className="cursor-pointer w-6 h-6"
               onClick={() => setDeleteModalOpen(true)}
             />
           </span>

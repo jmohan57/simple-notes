@@ -11,8 +11,9 @@ import { UserInterface } from "@/types/user-interface";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
-import toast, { Toaster } from "react-hot-toast";
 import { FaPlus } from "react-icons/fa";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function MyBoardsPage() {
   const router = useRouter();
@@ -172,6 +173,7 @@ function MyBoardsPage() {
         createModalOpen && "fixed"
       }`}
     >
+      <ToastContainer position="top-center" />
       <NavBar
         user={user!}
         onPasswordChange={() => setPasswordModalOpen(true)}
@@ -215,8 +217,6 @@ function MyBoardsPage() {
       <div
         className={`w-full p-6 flex flex-col flex-wrap md:flex-row justify-center items-center md:justify-evenly gap-4`}
       >
-        <Toaster />
-
         {/* Boards Cards */}
         {boards.map((board) => {
           return (

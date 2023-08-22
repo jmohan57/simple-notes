@@ -1,13 +1,15 @@
 "use client";
 
-import { ICard } from "@/types/card-interface";
+import { ICard, ICardComments } from "@/types/card-interface";
 import React, { useEffect, useState } from "react";
 import {
   AiFillDelete,
   AiOutlineClose,
   AiOutlineCreditCard,
 } from "react-icons/ai";
-import { BsTextParagraph } from "react-icons/bs";
+import { CgDetailsMore } from "react-icons/cg";
+import { LiaCommentSolid } from "react-icons/lia";
+import CardComment from "@/components/MyBoards/CardComment";
 
 interface CardModalProps {
   card: ICard;
@@ -21,6 +23,8 @@ interface CardModalProps {
 function CardModal(props: CardModalProps) {
   const [cardTitle, setCardTitle] = useState("");
   const [cardDescription, setCardDescription] = useState("");
+  const [newComment, setNewComment] = useState("");
+  const [comments, setComments] = useState<ICardComments[]>([]);
   const [editDescription, setEditDescription] = useState<boolean>(false);
   const [sureDelete, setSureDelete] = useState<boolean>(false);
 
@@ -29,6 +33,10 @@ function CardModal(props: CardModalProps) {
       setCardTitle(props.card.cardTitle!);
       setCardDescription(props.card.cardDescription!);
       setEditDescription(props.card.cardDescription!.length === 0);
+
+      if (props.card.comments && props.card.comments.length > 0) {
+        setComments(props.card.comments);
+      }
     }
   }, [props.card]);
 
@@ -74,9 +82,75 @@ function CardModal(props: CardModalProps) {
     props.onUpdateCardDetails(updatedCard);
   };
 
+  const onAddComment = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      if (newComment.trim() !== "") {
+        const newCommentObj: ICardComments = {
+          id: Date.now(),
+          comment: newComment.trim(),
+          editedOn: new Date(),
+        };
+
+        // Save the comment locally
+        const updatedCommentArray = [...comments];
+        updatedCommentArray.unshift(newCommentObj);
+        setComments(updatedCommentArray);
+        setNewComment("");
+
+        // send the comment for db update
+        let updatedCard;
+        if (
+          cardDescription.trim().length > 0 &&
+          cardDescription !== props.card.cardDescription &&
+          !editDescription
+        ) {
+          updatedCard = {
+            ...props.card,
+            comments: updatedCommentArray,
+            cardDescription,
+          };
+        } else {
+          updatedCard = { ...props.card, comments: updatedCommentArray };
+        }
+
+        props.onUpdateCardDetails(updatedCard);
+      }
+    }
+  };
+
+  const onDeleteComment = (commentId: number) => {
+    const updatedComments = [...comments];
+    const comment = updatedComments.find((comment) => comment.id === commentId);
+
+    if (comment) {
+      updatedComments.splice(updatedComments.indexOf(comment), 1);
+      setComments(updatedComments);
+
+      // send for db update
+      let updatedCard;
+      if (
+        cardDescription.trim().length > 0 &&
+        cardDescription !== props.card.cardDescription &&
+        !editDescription
+      ) {
+        updatedCard = {
+          ...props.card,
+          comments: updatedComments,
+          cardDescription,
+        };
+      } else {
+        updatedCard = { ...props.card, comments: updatedComments };
+      }
+
+      props.onUpdateCardDetails(updatedCard);
+    }
+  };
+
   const onClose = () => {
     setCardTitle("");
     setCardDescription("");
+    setNewComment("");
     setEditDescription(false);
     setSureDelete(false);
     props.closeModal();
@@ -87,9 +161,9 @@ function CardModal(props: CardModalProps) {
       <div
         className={`fixed inset-0 ${
           props.isOpen ? "flex" : "hidden"
-        } items-center justify-center bg-gray-800 bg-opacity-80`}
+        } items-center justify-center bg-slate-900 bg-opacity-80`}
       >
-        <div className="bg-white dark:bg-slate-800 w-[95%] sm:w-5/6 md:w-2/3 lg:w-1/2 p-4 rounded-lg shadow-md transform transition-transform ease-in-out duration-300">
+        <div className="bg-white dark:bg-slate-800 w-full sm:w-5/6 md:w-2/3 lg:w-1/2 p-4 rounded-lg shadow-md transform transition-transform ease-in-out duration-300 max-h-[80vh]">
           {/* Close Button */}
           <button
             className="absolute top-4 right-4 text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white"
@@ -98,7 +172,7 @@ function CardModal(props: CardModalProps) {
             <AiOutlineClose className="w-6 h-6" title="Close" />
           </button>
 
-          <span className="flex flex-col w-[90%] gap-1 text-black dark:text-white">
+          <span className="flex flex-col w-[90%] gap-1 mb-2 text-black dark:text-white">
             {/* Title Section */}
             <span className="flex w-full justify-start items-center gap-2">
               <AiOutlineCreditCard className="w-6 h-6" />
@@ -113,10 +187,12 @@ function CardModal(props: CardModalProps) {
             <h5 className="text-sm ml-8">
               in list <b>{props.listTitle}</b>
             </h5>
+          </span>
 
+          <span className="flex flex-col w-full max-h-[65vh] overflow-y-auto scrollbar-none gap-2 dark:text-white">
             {/* Description */}
             <span className="flex w-full justify-start items-center gap-2 mt-6">
-              <BsTextParagraph className="w-6 h-6" />
+              <CgDetailsMore className="w-6 h-6" />
               <h2 className="font-semibold">Description</h2>
             </span>
             {editDescription && (
@@ -124,7 +200,7 @@ function CardModal(props: CardModalProps) {
                 <textarea
                   rows={4}
                   maxLength={300}
-                  className="w-[90%] border border-blue-500 p-2 outline-none resize-none ml-8 rounded-md dark:bg-gray-600"
+                  className="w-[90%] border border-blue-500 p-2 outline-none resize-none ml-8 rounded-md dark:bg-gray-600 text-base"
                   placeholder="Write a meaningful description"
                   value={cardDescription}
                   onChange={(e) => setCardDescription(e.target.value)}
@@ -142,12 +218,46 @@ function CardModal(props: CardModalProps) {
             )}
             {!editDescription && (
               <p
-                className="ml-8 w-[90%] text-black dark:text-white cursor-pointer"
+                className="ml-8 w-[90%] text-black text-base dark:text-white cursor-pointer"
                 onClick={() => setEditDescription(true)}
               >
                 {cardDescription}
               </p>
             )}
+
+            <span className="flex w-full justify-start items-center gap-2 mt-6">
+              <LiaCommentSolid className="w-6 h-6" />
+              <h2 className="font-semibold">Comments</h2>
+            </span>
+            {/* Add Comments Section */}
+            <div className="flex w-full">
+              <textarea
+                rows={2}
+                maxLength={300}
+                className="w-[90%] border border-blue-500 p-2 outline-none resize-none ml-8 rounded-md dark:bg-gray-600 text-sm"
+                placeholder="Add a comment, then press enter to save..."
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                onKeyDown={onAddComment}
+              />
+            </div>
+
+            {/* Show Comments Section */}
+            {comments.length > 0 && (
+              <div className="w-[90%] ml-8 flex flex-col gap-3 rounded-md">
+                {comments.map((comment) => {
+                  return (
+                    <CardComment
+                      key={comment.id}
+                      comment={comment}
+                      onDelete={onDeleteComment}
+                    />
+                  );
+                })}
+              </div>
+            )}
+
+            {/* Delete Card Button */}
             {!sureDelete && (
               <button
                 className="bg-red-500 text-white px-3 py-2 w-fit rounded-md mt-6 ml-8 hover:bg-red-700 flex justify-center items-center gap-2"

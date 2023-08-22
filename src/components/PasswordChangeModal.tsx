@@ -2,8 +2,8 @@
 
 import axios from "axios";
 import React, { useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
 import { BiLoaderAlt } from "react-icons/bi";
+import { toast } from "react-toastify";
 
 interface PasswordChangeModalProps {
   isOpen: boolean;
@@ -54,7 +54,6 @@ function PasswordChangeModal(props: PasswordChangeModalProps) {
 
       <div className="fixed inset-0 z-10 overflow-y-auto">
         <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-          <Toaster />
           {!isSaving ? (
             <div className="relative transform overflow-hidden rounded-lg bg-white dark:bg-slate-900 text-left shadow-xl transition-all w-full sm:my-8 sm:w-full sm:max-w-sm">
               <div className="bg-white dark:bg-slate-900 px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
@@ -94,9 +93,7 @@ function PasswordChangeModal(props: PasswordChangeModalProps) {
             <div className="relative transform overflow-hidden rounded-lg bg-white dark:bg-slate-900 shadow-xl transition-all w-full sm:my-8 sm:w-full sm:max-w-xs">
               <span className="flex flex-col justify-center items-center my-8 gap-3 text-slate-800 dark:text-white">
                 <BiLoaderAlt className="animate-spin h-8 w-8" />
-                <h1 className="text-xl font-semibold">
-                  Updating, please wait
-                </h1>
+                <h1 className="text-xl font-semibold">Updating, please wait</h1>
               </span>
             </div>
           )}
