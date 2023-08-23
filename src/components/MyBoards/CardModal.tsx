@@ -189,7 +189,7 @@ function CardModal(props: CardModalProps) {
             </h5>
           </span>
 
-          <span className="flex flex-col w-[95%] max-h-[65vh] overflow-y-auto gap-2 dark:text-white">
+          <span className="flex flex-col w-full max-h-[65vh] overflow-y-auto gap-2 dark:text-white">
             {/* Description */}
             <span className="flex w-full justify-start items-center gap-2 mt-6">
               <CgDetailsMore className="w-6 h-6" />
@@ -200,7 +200,7 @@ function CardModal(props: CardModalProps) {
                 <textarea
                   rows={4}
                   maxLength={300}
-                  className="w-[90%] border border-blue-500 p-2 outline-none resize-none ml-8 rounded-md dark:bg-gray-600 text-base"
+                  className="w-[88%] border border-blue-500 p-2 outline-none resize-none ml-8 rounded-md dark:bg-gray-600 text-base"
                   placeholder="Write a meaningful description"
                   value={cardDescription}
                   onChange={(e) => setCardDescription(e.target.value)}
@@ -218,7 +218,7 @@ function CardModal(props: CardModalProps) {
             )}
             {!editDescription && (
               <p
-                className="ml-8 w-[90%] text-black text-base dark:text-white cursor-pointer"
+                className="ml-8 w-[88%] text-black text-base dark:text-white cursor-pointer"
                 onClick={() => setEditDescription(true)}
               >
                 {cardDescription}
@@ -234,7 +234,7 @@ function CardModal(props: CardModalProps) {
               <textarea
                 rows={2}
                 maxLength={300}
-                className="w-[90%] border border-blue-500 p-2 outline-none resize-none ml-8 rounded-md dark:bg-gray-600 text-sm"
+                className="w-[88%] border border-blue-500 p-2 outline-none resize-none ml-8 rounded-md dark:bg-gray-600 text-sm"
                 placeholder="Add a comment, then press enter to save..."
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
@@ -244,7 +244,7 @@ function CardModal(props: CardModalProps) {
 
             {/* Show Comments Section */}
             {comments.length > 0 && (
-              <div className="w-[90%] ml-8 flex flex-col gap-3 rounded-md">
+              <div className="w-[88%] ml-8 flex flex-col gap-3 rounded-md">
                 {comments.map((comment) => {
                   return (
                     <CardComment
