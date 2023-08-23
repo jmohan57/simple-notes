@@ -10,6 +10,7 @@ import { Draggable, Droppable } from "react-beautiful-dnd";
 import { MdDelete } from "react-icons/md";
 import DeleteModal from "@/components/MyBoards/DeleteModal";
 import CardModal from "./CardModal";
+import { BiComment } from "react-icons/bi";
 
 interface SingleBoardListProps {
   listData: IList;
@@ -173,6 +174,15 @@ function SingleBoardList(props: SingleBoardListProps) {
                         }}
                       >
                         {card.cardTitle}
+                        {card.comments && card.comments?.length > 0 && (
+                          <span
+                            className="w-full flex items-center text-sm gap-1"
+                            title="Comments"
+                          >
+                            <BiComment />
+                            {card.comments?.length}
+                          </span>
+                        )}
                       </div>
                     )}
                   </Draggable>
