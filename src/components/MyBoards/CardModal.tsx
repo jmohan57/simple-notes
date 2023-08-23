@@ -238,7 +238,7 @@ function CardModal(props: CardModalProps) {
                 <MDEditor.Markdown
                   source={cardDescription}
                   style={{
-                    whiteSpace: "pre-wrap",
+                    whiteSpace: "normal",
                     background: "transparent",
                   }}
                 />
