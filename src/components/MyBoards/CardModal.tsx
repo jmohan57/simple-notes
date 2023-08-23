@@ -1,15 +1,18 @@
 "use client";
 
+import CardComment from "@/components/MyBoards/CardComment";
 import { ICard, ICardComments } from "@/types/card-interface";
+import MDEditor, { commands } from "@uiw/react-md-editor";
 import React, { useEffect, useState } from "react";
 import {
   AiFillDelete,
+  AiFillEdit,
   AiOutlineClose,
   AiOutlineCreditCard,
 } from "react-icons/ai";
 import { CgDetailsMore } from "react-icons/cg";
 import { LiaCommentSolid } from "react-icons/lia";
-import CardComment from "@/components/MyBoards/CardComment";
+import rehypeSanitize from "rehype-sanitize";
 
 interface CardModalProps {
   card: ICard;
@@ -163,7 +166,7 @@ function CardModal(props: CardModalProps) {
           props.isOpen ? "flex" : "hidden"
         } items-center justify-center bg-slate-900 bg-opacity-80`}
       >
-        <div className="bg-white dark:bg-slate-800 w-full sm:w-5/6 md:w-2/3 lg:w-1/2 p-4 rounded-lg shadow-md transform transition-transform ease-in-out duration-300 max-h-[80vh]">
+        <div className="bg-white dark:bg-slate-950 w-full sm:w-5/6 md:w-2/3 lg:w-1/2 p-4 rounded-lg shadow-md transform transition-transform ease-in-out duration-300 max-h-[80vh]">
           {/* Close Button */}
           <button
             className="absolute top-4 right-4 text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white"
@@ -177,7 +180,7 @@ function CardModal(props: CardModalProps) {
             <span className="flex w-full justify-start items-center gap-2">
               <AiOutlineCreditCard className="w-6 h-6" />
               <input
-                className="w-[90%] text-xl font-semibold bg-white dark:bg-slate-800 text-black dark:text-white"
+                className="w-[90%] text-xl font-semibold bg-transparent text-black dark:text-white"
                 maxLength={34}
                 value={cardTitle}
                 onChange={(e) => setCardTitle(e.target.value)}
@@ -192,19 +195,34 @@ function CardModal(props: CardModalProps) {
           <span className="flex flex-col w-full max-h-[65vh] overflow-y-auto gap-2 dark:text-white">
             {/* Description */}
             <span className="flex w-full justify-start items-center gap-2 mt-6">
-              <CgDetailsMore className="w-6 h-6" />
-              <h2 className="font-semibold">Description</h2>
+              <span className="flex justify-start items-center gap-2">
+                <CgDetailsMore className="w-6 h-6" />
+                <h2 className="font-semibold">Description</h2>
+              </span>
+              <AiFillEdit
+                className="w-4 h-4 cursor-pointer"
+                title="Edit description"
+                onClick={() => setEditDescription(true)}
+              />
             </span>
             {editDescription && (
               <span className="flex flex-col w-full">
-                <textarea
-                  rows={4}
-                  maxLength={300}
-                  className="w-[88%] border border-blue-500 p-2 outline-none resize-none ml-8 rounded-md dark:bg-gray-600 text-base"
+                <MDEditor
+                  className="w-[88%] border border-blue-500 p-2 outline-none ml-8 rounded-md dark:bg-gray-600 text-base"
                   placeholder="Write a meaningful description"
                   value={cardDescription}
-                  onChange={(e) => setCardDescription(e.target.value)}
+                  onChange={(val) => setCardDescription(val!)}
+                  preview="edit"
+                  previewOptions={{
+                    rehypePlugins: [[rehypeSanitize]],
+                  }}
+                  commandsFilter={(command) =>
+                    command === commands.image || command === commands.comment
+                      ? false
+                      : command
+                  }
                 />
+
                 <span className="flex w-[90%] justify-between ml-8">
                   <button
                     className="bg-blue-500 hover:bg-blue-600 text-white mt-1 px-3 py-1 rounded-md w-fit"
@@ -212,17 +230,19 @@ function CardModal(props: CardModalProps) {
                   >
                     Save
                   </button>
-                  <p className="text-xs italic">{cardDescription.length}/300</p>
                 </span>
               </span>
             )}
             {!editDescription && (
-              <p
-                className="ml-8 w-[88%] text-black text-base dark:text-white cursor-pointer"
-                onClick={() => setEditDescription(true)}
-              >
-                {cardDescription}
-              </p>
+              <span className="ml-8 w-[88%] text-base">
+                <MDEditor.Markdown
+                  source={cardDescription}
+                  style={{
+                    whiteSpace: "pre-wrap",
+                    background: "transparent",
+                  }}
+                />
+              </span>
             )}
 
             <span className="flex w-full justify-start items-center gap-2 mt-6">
@@ -234,7 +254,7 @@ function CardModal(props: CardModalProps) {
               <textarea
                 rows={2}
                 maxLength={300}
-                className="w-[88%] border border-blue-500 p-2 outline-none resize-none ml-8 rounded-md dark:bg-gray-600 text-sm"
+                className="w-[88%] border border-blue-500 p-2 outline-none resize-none ml-8 rounded-md dark:bg-gray-900 text-sm"
                 placeholder="Add a comment, then press enter to save..."
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
