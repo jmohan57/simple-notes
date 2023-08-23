@@ -30,7 +30,7 @@ function CardComment(props: CardCommentProps) {
           Delete
         </p>
         {showConfirmDialog && (
-          <div className="absolute top-0 left-0 mt-[-40px] p-4 w-fit text-center text-sm bg-white dark:bg-slate-950 border border-black rounded-lg shadow-lg shadow-gray-400">
+          <div className="absolute top-0 left-0 mt-[-40px] p-4 w-fit text-center text-sm bg-white dark:bg-slate-950 border border-black dark:border-white rounded-lg shadow-lg shadow-gray-400">
             <p>
               Are you sure you want to
               <br />
