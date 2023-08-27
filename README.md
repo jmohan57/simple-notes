@@ -1,6 +1,6 @@
 # Simple Apps - Your Productivity Companion
 
-Welcome to the GitHub repository for Simple Apps, your all-in-one productivity companion that consists of two micro apps: a powerful note-taking tool and a versatile kanban board application. With a sleek interface, robust features, and cloud-based storage, Simple Apps is designed to enhance your productivity, organization, and creativity.
+Welcome to the GitHub repository for Simple Apps, your all-in-one productivity companion that consists of two micro apps: a powerful note-taking tool, a versatile kanban board application and an AI based knowledge test tool. With a sleek interface, robust features, and cloud-based storage, Simple Apps is designed to enhance your productivity, organization, and creativity.
 
 **Access Simple Apps here:** [https://next-simple-notes.vercel.app](https://next-simple-notes.vercel.app)
 
@@ -24,12 +24,22 @@ Welcome to the GitHub repository for Simple Apps, your all-in-one productivity c
 - Responsive layout ensures a seamless experience on different screen sizes.
 - Dark mode support for enhanced usability in low-light environments.
 
+### Knowledge Test App
+
+- Provide any topic any topic you want to test your knowledge on.
+- AI will generate set of 5 questions, on continue difficulty level will increase based on the performance
+- Check a detailed performance report upon successful completion of the test.
+- Performance report has various charts and diagrams for analizing the test performance.
+- Completely mobile experience friendly and Dark mode compatible.
+- Minimalist and easy to understand interface.
+
 ## Technologies Used
 
 - Next.js 13: Offering fast rendering and simplified development.
 - Tailwind CSS: Ensuring a responsive and visually appealing design.
 - Essential React libraries: Enhancing app functionality and user experience.
 - MongoDB: Efficiently storing and managing app data.
+- ChartJS: For creating a detailed performance report.
 
 ## Getting Started
 

@@ -1,7 +1,7 @@
 {
   "name": "Simple Apps",
   "short_name": "Simple Apps",
-  "description": "This is a simple web app with built-in features like Notes and Kanban boards. It stores all your notes and boards in the cloud, so that you can access them from anywhere and any device.",
+  "description": "This is a simple web app with built-in features like Notes, Kanban boards and AI based knowledge test. It stores all your notes and boards in the cloud, so that you can access them from anywhere and any device.",
   "icons": [
     {
       "src": "/icon.png",
