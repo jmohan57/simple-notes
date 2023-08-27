@@ -234,8 +234,9 @@ function MyBoardsPage() {
               {/* Suggested Topics */}
               <h1 className="text-white font-bold mt-4">Suggested Topics</h1>
               <span className="w-[90%] md:w-[60%] flex justify-center items-center flex-wrap gap-2">
-                {suggestedQuizTopic.map((topic) => (
+                {suggestedQuizTopic.map((topic, i) => (
                   <div
+                    key={i}
                     className="bg-white text-black border-black border-2 shadow-lg p-3 rounded-full cursor-pointer"
                     onClick={() => setQuizTopic(topic)}
                   >
@@ -255,8 +256,9 @@ function MyBoardsPage() {
                     <h1 className="font-bold text-xl">History</h1>
                   </span>
                   <span className="w-full mt-2 flex justify-start items-center gap-4">
-                    {quizHistory.map((quiz) => (
+                    {quizHistory.map((quiz, i) => (
                       <span
+                        key={i}
                         className="bg-gradient-to-br from-blue-800 to-red-700
                         rounded-md p-4 text-white font-semibold cursor-pointer hover:scale-95 duration-150"
                         onClick={() => setReportModalData(quiz)}
