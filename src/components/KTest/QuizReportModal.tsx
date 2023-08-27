@@ -85,7 +85,7 @@ const QuizReportModal: React.FC<Props> = ({ isOpen, closeModal, quizData }) => {
           className="bg-white dark:bg-slate-900 flex flex-col w-[90%] md:w-[75%] justify-center
         items-center p-8 rounded-lg shadow-lg zoom-in max-h-[98vh] overflow-y-auto"
         >
-          <h2 className="text-2xl font-semibold mb-4 mt-4 text-center">
+          <h2 className="text-lg md:text-2xl font-semibold mb-4 mt-4 text-center">
             Knowledge Test Report on {capitalizeWords(quizData.topic)}
           </h2>
           <div className="w-full flex flex-col space-y-4">
