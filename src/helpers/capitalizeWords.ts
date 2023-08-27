@@ -1,4 +1,6 @@
 export function capitalizeWords(input: string): string {
+  if (input === undefined) return input;
+
   const words = input.split(" ");
 
   const capitalizedWords = words.map((word) => {

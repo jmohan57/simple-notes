@@ -116,6 +116,7 @@ function MyBoardsPage() {
 
   const generateQuiz = async (topic: string, currentDiffLevel: number) => {
     setLoadingQuiz(true);
+    if (topic === undefined || currentDiffLevel === undefined) return;
     try {
       const response = await axios.post("/api/ktest/getquestions", {
         topic,
@@ -125,7 +126,7 @@ function MyBoardsPage() {
 
       if (response.data.success) {
         if (response.data.resultObject.currentQuizData[0].options.length > 5) {
-          generateQuiz(quizData?.topic!, diffLevel);
+          generateQuiz(quizData?.topic ?? quizTopic, diffLevel ?? 1);
         } else {
           setQuizData(response.data.resultObject);
         }
@@ -171,6 +172,7 @@ function MyBoardsPage() {
       toast.error("Error occured while ending quiz !");
     } finally {
       setIsEnding(false);
+      setEndQuizModalOpen(false);
     }
   };
 
