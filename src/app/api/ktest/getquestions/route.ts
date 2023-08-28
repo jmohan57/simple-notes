@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
       messages: [
         {
           role: "user",
-          content: `Generate 2 questions of mcq type with correct answer, on the topic ${topic} with difficulty level ${diffLevel}, where maximum difficulty level is 10.`,
+          content: `Generate 1 question of mcq type with correct answer, on the topic ${topic} with difficulty level ${diffLevel}, where maximum difficulty level is 10.`,
         },
       ],
       model: "gpt-3.5-turbo",
