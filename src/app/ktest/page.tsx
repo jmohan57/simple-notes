@@ -266,12 +266,18 @@ function MyBoardsPage() {
                     <AiOutlineHistory className="w-6 h-6" />
                     <h1 className="font-bold text-xl">History</h1>
                   </span>
-                  <span className="w-full mt-2 flex justify-start items-center gap-4 flex-wrap">
+                  <span
+                    className={`w-full mt-2 flex ${
+                      quizHistory.length > 3
+                        ? "justify-evenly"
+                        : "justify-start"
+                    } items-center gap-4 flex-wrap`}
+                  >
                     {quizHistory.map((quiz, i) => (
                       <span
                         key={i}
-                        className="bg-gradient-to-br from-blue-800 to-red-700
-                        rounded-md p-4 text-white font-semibold cursor-pointer hover:scale-95 duration-150 shrink-0"
+                        className={`bg-gradient-to-br from-blue-800 to-red-700
+                        rounded-md p-4 text-white font-semibold cursor-pointer hover:scale-95 duration-150 shrink-0`}
                         onClick={() => setReportModalData(quiz)}
                       >
                         {capitalizeWords(quiz.topic)}
