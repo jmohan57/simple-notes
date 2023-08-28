@@ -152,7 +152,9 @@ function MyBoardsPage() {
 
     if (
       quizReport &&
-      quizReport?.correct > quizReport?.incorrect &&
+      (quizData?.currentDifficultyLevel! > 5
+        ? quizReport?.correct > quizReport?.incorrect * 2
+        : quizReport?.correct > quizReport?.incorrect) &&
       quizData?.currentDifficultyLevel! < 10
     ) {
       generateQuiz(quizData?.topic!, quizData?.currentDifficultyLevel! + 1);
