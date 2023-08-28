@@ -47,8 +47,7 @@ const QuizReportModal: React.FC<Props> = ({ isOpen, closeModal, quizData }) => {
       .map((dl) => dl.incorrect)
       .reduce((acc, dl) => acc + dl);
 
-    const totalQuestions: number =
-      Math.ceil((totalCorrectQuestion + totalInCorrectQuestion) / 5) * 5;
+    const totalQuestions: number = totalCorrectQuestion + totalInCorrectQuestion;
 
     const pieChartData = {
       labels: ["Correct", "Incorrect"],
@@ -108,10 +107,10 @@ const QuizReportModal: React.FC<Props> = ({ isOpen, closeModal, quizData }) => {
             <div className="w-full flex-col flex md:flex-row justify-between items-center max-h-[60vh] overflow-y-auto">
               <div
                 className="w-[90%] md:w-[20%] flex flex-col bg-gray-300 dark:bg-blue-950
-                dark:border-2 dark:border-white p-6 rounded-md text-2xl font-bold justify-center items-center
-                my-2 gap-8 text-center min-h-[200px]"
+                dark:border-2 dark:border-white p-6 rounded-md text-xl font-bold justify-center items-center
+                my-2 gap-4 text-center min-h-[200px]"
               >
-                <h1>Total Questions</h1>
+                <h1>Total Questions Attempted</h1>
                 <h1 className="text-4xl">{totalQuestions}</h1>
               </div>
               <div

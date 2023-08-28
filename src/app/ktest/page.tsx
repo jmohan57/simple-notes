@@ -126,17 +126,22 @@ function MyBoardsPage() {
 
       if (response.data.success) {
         if (response.data.resultObject.currentQuizData[0].options.length > 5) {
-          generateQuiz(quizData?.topic ?? quizTopic, diffLevel ?? 1);
+          generateQuiz(topic, currentDiffLevel);
         } else {
+          setLoadingQuiz(false);
           setQuizData(response.data.resultObject);
         }
       } else {
-        toast.error("Error occured while generating quiz !");
+        setLoadingQuiz(false);
+        toast.error(
+          "Error occured while generating questions, please try again !"
+        );
       }
     } catch (error) {
-      toast.error("Error occured while generating quiz !");
-    } finally {
       setLoadingQuiz(false);
+      toast.error(
+        "Error occured while generating questions, please try again !"
+      );
     }
   };
 
@@ -145,11 +150,13 @@ function MyBoardsPage() {
       (qr) => qr.difficultyLevel === quizData.currentDifficultyLevel
     );
 
-    if (quizReport && quizReport?.correct > quizReport?.incorrect) {
-      console.log("Difficulty Increased");
+    if (
+      quizReport &&
+      quizReport?.correct > quizReport?.incorrect &&
+      quizData?.currentDifficultyLevel! < 10
+    ) {
       generateQuiz(quizData?.topic!, quizData?.currentDifficultyLevel! + 1);
     } else {
-      console.log("Difficulty Not Increased");
       generateQuiz(quizData?.topic!, quizData?.currentDifficultyLevel!);
     }
   };
@@ -257,12 +264,12 @@ function MyBoardsPage() {
                     <AiOutlineHistory className="w-6 h-6" />
                     <h1 className="font-bold text-xl">History</h1>
                   </span>
-                  <span className="w-full mt-2 flex justify-start items-center gap-4">
+                  <span className="w-full mt-2 flex justify-start items-center gap-4 flex-wrap">
                     {quizHistory.map((quiz, i) => (
                       <span
                         key={i}
                         className="bg-gradient-to-br from-blue-800 to-red-700
-                        rounded-md p-4 text-white font-semibold cursor-pointer hover:scale-95 duration-150"
+                        rounded-md p-4 text-white font-semibold cursor-pointer hover:scale-95 duration-150 shrink-0"
                         onClick={() => setReportModalData(quiz)}
                       >
                         {capitalizeWords(quiz.topic)}
