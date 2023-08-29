@@ -2,12 +2,16 @@ import { connect } from "@/dbconfig/dbConfig";
 import { createQuizData } from "@/helpers/createQuizData";
 import Quiz from "@/models/quizModel";
 import { NextRequest, NextResponse } from "next/server";
-import { OpenAI } from "openai";
+import { TextServiceClient } from "@google-ai/generativelanguage";
+import { GoogleAuth } from "google-auth-library";
 
 connect();
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_KEY,
+const MODEL_NAME = "models/text-bison-001";
+const API_KEY = process.env.PALMAI_KEY;
+
+const client = new TextServiceClient({
+  authClient: new GoogleAuth().fromAPIKey(API_KEY!),
 });
 
 export async function POST(request: NextRequest) {
@@ -15,17 +19,16 @@ export async function POST(request: NextRequest) {
     const reqBody = await request.json();
     const { topic, diffLevel, username } = reqBody;
 
-    const questions = await openai.chat.completions.create({
-      messages: [
-        {
-          role: "user",
-          content: `Generate 1 question of mcq type with correct answer, on the topic ${topic} with difficulty level ${diffLevel}, where maximum difficulty level is 10.`,
-        },
-      ],
-      model: "gpt-3.5-turbo",
+    const prompt = `Generate 2 mcq questions with 4 options and correct answer option, the format will be like Question: Question text next line options with a,b,c,d (in capital always) next line Answer: Answer option, no explanation and strictly no repeat questions, on topic ${topic}, difficulty level is ${diffLevel} out of 10, where 10 is the most difficult question to answer, strictly follow the difficulty level.`;
+
+    const questions = await client.generateText({
+      model: MODEL_NAME,
+      prompt: {
+        text: prompt,
+      },
     });
 
-    const quizData = createQuizData(questions.choices[0].message.content!);
+    const quizData = createQuizData(questions[0].candidates![0].output!);
 
     // Find if the current quiz session is already exists
     const quiz = await Quiz.findOne({ username }).where({

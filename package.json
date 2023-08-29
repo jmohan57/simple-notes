@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@google-ai/generativelanguage": "^1.0.0",
     "@types/node": "20.4.8",
     "@types/react": "18.2.18",
     "@types/react-dom": "18.2.7",
@@ -19,10 +20,10 @@
     "chart.js": "^4.4.0",
     "eslint": "8.46.0",
     "eslint-config-next": "13.4.12",
+    "google-auth-library": "^9.0.0",
     "jsonwebtoken": "^9.0.1",
     "mongoose": "^7.4.2",
     "next": "13.4.12",
-    "openai": "^4.2.0",
     "postcss": "8.4.27",
     "react": "18.2.0",
     "react-beautiful-dnd": "^13.1.1",
@@ -38,6 +39,7 @@
     "@types/bcryptjs": "^2.4.2",
     "@types/jsonwebtoken": "^9.0.2",
     "@types/react-beautiful-dnd": "^13.1.4",
-    "encoding": "^0.1.13"
+    "encoding": "^0.1.13",
+    "request": "^2.88.2"
   }
 }

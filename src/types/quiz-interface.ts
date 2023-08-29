@@ -1,15 +1,20 @@
+export interface QuestionOption {
+  letter?: string;
+  text?: string;
+}
+
 export interface QuestionObject {
   question: string;
-  options: string[];
+  options: QuestionOption[];
   correctAnswer?: string;
   selectedOption?: string;
   isCorrect?: boolean;
 }
 
 export interface QuizReport {
-    difficultyLevel: number;
-    correct: number;
-    incorrect: number;
+  difficultyLevel: number;
+  correct: number;
+  incorrect: number;
 }
 
 export interface IQuiz {

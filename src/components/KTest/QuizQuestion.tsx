@@ -80,12 +80,12 @@ function QuizQuestion(props: QuizQuestionProps) {
       <span className="w-full flex flex-col gap-2">
         {props.question.options.map((option, i) => {
           return (
-            option.length > 0 && (
+            option.text!.length > 0 && (
               <div
                 key={i}
                 className={`w-full flex p-2 justify-between rounded-md shadow-md ${
-                  selectedOption === option ||
-                  props.question.selectedOption === option
+                  selectedOption === option.text ||
+                  props.question.selectedOption === option.text
                     ? "bg-blue-200 dark:bg-gray-600"
                     : "bg-white dark:bg-slate-900"
                 } border-2 
@@ -93,10 +93,10 @@ function QuizQuestion(props: QuizQuestionProps) {
                 selectedOption.length === 0 &&
                 "cursor-pointer hover:bg-blue-200 dark:hover:bg-gray-600"
               }`}
-                onClick={() => handleAttempt(option)}
+                onClick={() => handleAttempt(option.text!)}
               >
-                {option}
-                {isSaving && selectedOption === option && (
+                {option.text}
+                {isSaving && selectedOption === option.text && (
                   <span className="flex gap-1 italic text-sm items-center">
                     Saving
                     <BiLoader className="animate-spin" />
@@ -104,13 +104,13 @@ function QuizQuestion(props: QuizQuestionProps) {
                 )}
                 {!isSaving && isCorrect !== null && (
                   <>
-                    {isCorrect && selectedOption === option && (
+                    {isCorrect && selectedOption === option.text && (
                       <span className="flex gap-1 font-bold items-center text-green-500">
                         <p>Correct</p>
                         <BsCheckCircleFill />
                       </span>
                     )}
-                    {!isCorrect && selectedOption === option && (
+                    {!isCorrect && selectedOption === option.text && (
                       <span className="flex gap-1 font-bold items-center text-red-600">
                         <p>Incorrect</p>
                         <BsFillXCircleFill />

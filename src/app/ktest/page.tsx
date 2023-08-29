@@ -125,7 +125,7 @@ function MyBoardsPage() {
       });
 
       if (response.data.success) {
-        if (response.data.resultObject.currentQuizData[0].options.length > 6) {
+        if (response.data.resultObject.currentQuizData[0].options.length > 4) {
           generateQuiz(topic, currentDiffLevel);
         } else {
           setLoadingQuiz(false);
