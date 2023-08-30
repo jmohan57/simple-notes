@@ -75,7 +75,11 @@ function MyBoardsPage() {
           if (response.data.resultObject[0]) {
             setQuizHistory(response.data.resultObject);
           } else {
-            setQuizData(response.data.resultObject);
+            setQuizData(
+              response.data.resultObject.length > 0
+                ? response.data.resultObject
+                : null
+            );
 
             const diffLevel =
               response.data.resultObject.currentDifficultyLevel ?? 1;
