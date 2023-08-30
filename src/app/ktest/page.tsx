@@ -234,7 +234,7 @@ function MyBoardsPage() {
             <div className="w-full flex flex-col justify-center items-center gap-4">
               <input
                 type="text"
-                placeholder="Enter a topic you want to test your knowledge on ..."
+                placeholder="Enter a topic or an article link you want to test your knowledge on ..."
                 className="w-[90%] md:w-[60%] p-2 rounded-md shadow-md border-2 border-blue-500 dark:border-white 
               bg-white dark:bg-gray-800 outline-none focus:scale-110 duration-300"
                 value={quizTopic}
