@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     const reqBody = await request.json();
     const { topic, diffLevel, username } = reqBody;
 
-    const prompt = `Generate 2 mcq questions with 4 options and correct answer option, the format will be like Question: Question text next line options with a,b,c,d (in capital always) next line Answer: Answer option, no explanation and strictly no repeat questions, on topic ${topic}, difficulty level is ${diffLevel} out of 10, where 10 is the most difficult question to answer, strictly follow the difficulty level.`;
+    const prompt = `Generate 2 mcq questions with 4 options and correct answer option, the format will be like Question: Question text next line options with a,b,c,d (in capital always) next line Answer: Answer option, do not use any question 1 or question 2, just plain question. No explanation and strictly no repeat questions, on topic ${topic}, difficulty level is ${diffLevel} out of 10, where 10 is the most difficult question to answer, strictly follow the difficulty level.`;
 
     const questions = await client.generateText({
       model: MODEL_NAME,
