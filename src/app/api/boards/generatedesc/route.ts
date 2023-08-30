@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
     const reqBody = await request.json();
     const { boardTitle, listTitle, cardTitle } = reqBody;
 
-    const prompt = `It is a kanban board titled as ${boardTitle}, it has a list called ${listTitle}, a card named ${cardTitle} has been created under the mentioned list. Now, generate a proper description for this card, no need to mention the card title, board title or list title at the top specifically, just a proper description for the description field.`;
+    const prompt = `It is a kanban board titled as ${boardTitle}, it has a list called ${listTitle}, a card named ${cardTitle} has been created under the mentioned list. Now, generate a proper and detailed description for this card.`;
 
     const description = await client.generateText({
       model: MODEL_NAME,
