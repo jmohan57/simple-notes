@@ -72,14 +72,10 @@ function MyBoardsPage() {
           username: user?.username,
         });
         if (response.data.success) {
-          if (response.data.resultObject[0]) {
+          if (response.data.resultObject.length >= 0) {
             setQuizHistory(response.data.resultObject);
           } else {
-            setQuizData(
-              response.data.resultObject.length > 0
-                ? response.data.resultObject
-                : null
-            );
+            setQuizData(response.data.resultObject ?? null);
 
             const diffLevel =
               response.data.resultObject.currentDifficultyLevel ?? 1;
