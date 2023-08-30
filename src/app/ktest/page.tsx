@@ -280,7 +280,9 @@ function MyBoardsPage() {
                         rounded-md p-4 text-white font-semibold cursor-pointer hover:scale-95 duration-150 shrink-0`}
                         onClick={() => setReportModalData(quiz)}
                       >
-                        {capitalizeWords(quiz.topic)}
+                        {quiz.topic.length > 14
+                          ? capitalizeWords(quiz.topic).slice(0, 14) + "..."
+                          : capitalizeWords(quiz.topic)}
                       </span>
                     ))}
                   </span>
