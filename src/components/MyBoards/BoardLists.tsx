@@ -13,7 +13,7 @@ import React, { useState, useEffect } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { FaSpinner } from "react-icons/fa";
 import { TfiReload } from "react-icons/tfi";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 interface BoardListsProps {
   boardData: IBoard;
@@ -170,6 +170,7 @@ function BoardLists(props: BoardListsProps) {
                 return (
                   <SingleBoardList
                     key={list._id}
+                    boardTitle={props.boardData.boardName}
                     listData={list}
                     onUpdateList={handleListUpdate}
                     reloadList={() => getLists()}

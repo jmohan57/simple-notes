@@ -13,6 +13,7 @@ import CardModal from "./CardModal";
 import { BiComment } from "react-icons/bi";
 
 interface SingleBoardListProps {
+  boardTitle: string;
   listData: IList;
   onUpdateList: (updatedListData: IList) => void;
   reloadList: () => void;
@@ -139,6 +140,7 @@ function SingleBoardList(props: SingleBoardListProps) {
       />
 
       <CardModal
+        boardTitle={props.boardTitle}
         card={cardModalData!}
         listTitle={props.listData.listTitle!}
         isOpen={cardModalData !== null && isCardModal}
