@@ -47,7 +47,13 @@ function QuizContainer(props: QuizContainerProps) {
     <div className="w-full md:w-[80%] flex flex-col justify-center items-center md:p-6 gap-4 zoom-in">
       {/* Quiz Topic and details */}
       <div className="w-full flex flex-col p-4 gap-4 justify-center items-center rounded-md shadow-md bg-white dark:bg-slate-900 border-2 border-slate-900 dark:border-white">
-        <h1 className={`${props.quizData.topic.length > 20 ? 'text-base md:text-lg' : 'text-xl md:text-2xl'} font-bold`}>
+        <h1
+          className={`${
+            props.quizData.topic.length > 20
+              ? "text-base md:text-lg"
+              : "text-xl md:text-2xl"
+          } font-bold`}
+        >
           {capitalizeWords(props.quizData.topic)}
         </h1>
         <span className="w-full flex justify-between flex-wrap items-center">
