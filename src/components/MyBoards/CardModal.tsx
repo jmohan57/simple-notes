@@ -44,6 +44,8 @@ function CardModal(props: CardModalProps) {
 
       if (props.card.comments && props.card.comments.length > 0) {
         setComments(props.card.comments);
+      } else {
+        setComments([]);
       }
     }
   }, [props.card]);
