@@ -1,4 +1,5 @@
 import { connect } from "@/dbconfig/dbConfig";
+import Reminder from "@/models/reminderModel";
 import User from "@/models/userModel";
 import { ITokenData } from "@/types/token-data-interface";
 import jwt from "jsonwebtoken";
@@ -20,11 +21,32 @@ export async function POST(request: NextRequest) {
       const user = await User.findById(userId).select("-password");
 
       if (user) {
-        return NextResponse.json({
-          message: "User Details Found",
-          success: true,
-          data: user,
-        });
+        try {
+          const reminders = await Reminder.find({ createdBy: user.username });
+
+          if (reminders) {
+            return NextResponse.json({
+              message: "User Details Found",
+              success: true,
+              data: user,
+              reminders: reminders,
+            });
+          } else {
+            return NextResponse.json({
+              message: "User Details Found",
+              success: true,
+              data: user,
+              reminders: [],
+            });
+          }
+        } catch (error) {
+          return NextResponse.json({
+            error: error,
+            message: "Sorry, some error occured !",
+            success: false,
+            staus: 500,
+          });
+        }
       } else {
         // Remove token from cookies
         const response = NextResponse.json({
@@ -41,7 +63,7 @@ export async function POST(request: NextRequest) {
         message: "Can not access token !",
         success: false,
         staus: 400,
-        token: request.cookies.get("token")
+        token: request.cookies.get("token"),
       });
       response.cookies.delete("token");
       return response;

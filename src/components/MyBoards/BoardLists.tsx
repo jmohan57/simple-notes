@@ -8,6 +8,7 @@ import { AddListItem } from "@/types/add-list-item-enum";
 import { IBoard } from "@/types/board-interface";
 import { Color } from "@/types/color-enum";
 import { IList } from "@/types/list-interface";
+import { IReminder } from "@/types/reminder-interface";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
@@ -17,6 +18,8 @@ import { toast } from "react-toastify";
 
 interface BoardListsProps {
   boardData: IBoard;
+  reminders: IReminder[];
+  onUpdateReminder: (reminders: IReminder[]) => void;
 }
 
 function BoardLists(props: BoardListsProps) {
@@ -171,8 +174,11 @@ function BoardLists(props: BoardListsProps) {
                   <SingleBoardList
                     key={list._id}
                     boardTitle={props.boardData.boardName}
+                    username={props.boardData.createdBy}
                     listData={list}
+                    reminders={props.reminders}
                     onUpdateList={handleListUpdate}
+                    onUpdateReminder={props.onUpdateReminder}
                     reloadList={() => getLists()}
                     showErrorToast={(message) => toast.error(message)}
                   />

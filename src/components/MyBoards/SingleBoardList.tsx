@@ -11,11 +11,15 @@ import { MdDelete } from "react-icons/md";
 import DeleteModal from "@/components/MyBoards/DeleteModal";
 import CardModal from "./CardModal";
 import { BiComment } from "react-icons/bi";
+import { IReminder } from "@/types/reminder-interface";
 
 interface SingleBoardListProps {
   boardTitle: string;
+  username: string;
   listData: IList;
+  reminders: IReminder[];
   onUpdateList: (updatedListData: IList) => void;
+  onUpdateReminder: (reminders: IReminder[]) => void;
   reloadList: () => void;
   showErrorToast: (message: string) => void;
 }
@@ -143,9 +147,12 @@ function SingleBoardList(props: SingleBoardListProps) {
         boardTitle={props.boardTitle}
         card={cardModalData!}
         listTitle={props.listData.listTitle!}
+        reminders={props.reminders}
+        username={props.username}
         isOpen={cardModalData !== null && isCardModal}
         onDeleteCard={onDeleteCard}
         onUpdateCardDetails={onUpdateCardDetails}
+        onUpdateReminder={props.onUpdateReminder}
         closeModal={() => {
           setIsCardModal(false);
           setCardModalData(null);

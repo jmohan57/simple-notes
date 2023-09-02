@@ -1,19 +1,23 @@
 "use client";
 
+import CalendarModal from "@/components/CalendarModal";
+import ReminderNotification from "@/components/ReminderNotification";
 import MainScreenLoader from "@/components/MainScreenLoader";
 import DeleteModal from "@/components/MyBoards/DeleteModal";
 import BoardLists from "@/components/MyBoards/BoardLists";
 import NavBar from "@/components/NavBar";
 import PasswordChangeModal from "@/components/PasswordChangeModal";
 import { boardBgColors } from "@/helpers/colorArray";
+import { AddListItem } from "@/types/add-list-item-enum";
 import { IBoard } from "@/types/board-interface";
+import { IReminder } from "@/types/reminder-interface";
 import { UserInterface } from "@/types/user-interface";
 import axios from "axios";
+import { format } from "date-fns";
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import { AiFillDelete } from "react-icons/ai";
 import { FaCheck } from "react-icons/fa";
-import { AddListItem } from "@/types/add-list-item-enum";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -27,6 +31,11 @@ function ViewBoardPage({ params }: { params: { id: string } }) {
   const [user, setUser] = useState<UserInterface>();
   const [passwordModalOpen, setPasswordModalOpen] = useState<boolean>(false);
   const [inputError, setInputError] = useState<boolean>(false);
+  const [calendarModalOpen, setCalendarModalOpen] = useState<boolean>(false);
+  const [reminders, setReminders] = useState<IReminder[]>();
+  const [currentReminderToasts, setCurrentReminderToasts] = useState<
+    IReminder[]
+  >([]);
 
   // ---- useEffects Region Start ---- //
   useEffect(() => {
@@ -37,19 +46,91 @@ function ViewBoardPage({ params }: { params: { id: string } }) {
     getBoardData();
   }, [user, boardId]);
 
+  useEffect(() => {
+    // Check and show today's reminders
+    if (reminders) {
+      const todaysReminders = reminders.filter(
+        (reminder) =>
+          reminder.reminderDate === format(new Date(), "dd/MM/yyyy") &&
+          reminder.isDone === false
+      );
+
+      if (currentReminderToasts !== todaysReminders) {
+        let removeToastIds: (string | undefined)[] = [];
+        currentReminderToasts.forEach((reminder) => {
+          if (todaysReminders.find((r) => r._id === reminder._id)) {
+            return;
+          } else {
+            removeToastIds.push(reminder._id);
+          }
+        });
+        removeToastIds.map((id) => toast.dismiss(id));
+
+        setCurrentReminderToasts(todaysReminders);
+        todaysReminders.length &&
+          todaysReminders.map((reminder) => {
+            return toast(
+              <ReminderNotification
+                reminder={reminder}
+                onUpdate={(reminder: IReminder) =>
+                  handleUpdateReminders(reminder)
+                }
+              />,
+              {
+                autoClose: false,
+                toastId: reminder._id,
+              }
+            );
+          });
+      }
+    }
+  }, [reminders]);
+
   // ---- useEffects Region End ---- //
 
   // ---- Handler Functions & API Calls ---- //
   const getUserDetails = async () => {
     try {
-      const response = await axios.post(`/../api/auth/authuser`);
+      const response = await axios.post("/api/auth/authuser");
       if (response.data.success) {
         setUser(response.data.data);
+        setReminders(response.data.reminders);
+        setUserLoading(false);
       } else {
         router.push("/login");
       }
     } catch (error: any) {
       router.push("/login");
+    }
+  };
+
+  const handleUpdateReminders = (reminder: IReminder) => {
+    updateReminders(reminder);
+  };
+
+  const updateReminders = async (updatedReminder: IReminder) => {
+    try {
+      const response = await axios.post(
+        "/api/reminder/update",
+        updatedReminder
+      );
+
+      if (response.data.success) {
+        toast.success("Reminder marked as Completed !");
+
+        let currentReminders = [...reminders!];
+        const index = currentReminders.indexOf(
+          currentReminders.find(
+            (reminder) => reminder._id === updatedReminder._id
+          )!
+        );
+        currentReminders.splice(index, 1, updatedReminder);
+        setReminders(currentReminders);
+      } else {
+        toast.error("Error occurred while marking reminder as completed !");
+      }
+    } catch (error) {
+      toast.error("Error occurred while marking reminder as completed !");
     }
   };
 
@@ -142,6 +223,7 @@ function ViewBoardPage({ params }: { params: { id: string } }) {
       <ToastContainer position="top-center" />
       <NavBar
         user={user!}
+        onCalendarOpen={() => setCalendarModalOpen(true)}
         onPasswordChange={() => setPasswordModalOpen(true)}
         isSigningOut={handleSigningOut}
         switchPageOption={{ title: "My Notes", path: "/mynotes" }}
@@ -155,6 +237,16 @@ function ViewBoardPage({ params }: { params: { id: string } }) {
           toast.success("Password updated !");
         }}
         username={user.username!}
+      />
+
+      <CalendarModal
+        reminders={reminders!}
+        username={user.username!}
+        isOpen={calendarModalOpen}
+        onClose={() => setCalendarModalOpen(false)}
+        onUpdateReminder={(updatedReminders: IReminder[]) =>
+          setReminders([...updatedReminders])
+        }
       />
 
       <DeleteModal
@@ -227,7 +319,13 @@ function ViewBoardPage({ params }: { params: { id: string } }) {
         </div>
 
         {/* Board main work area with Lists and Tasks */}
-        <BoardLists boardData={boardData} />
+        <BoardLists
+          boardData={boardData}
+          reminders={reminders ?? []}
+          onUpdateReminder={(updatedReminders: IReminder[]) =>
+            setReminders(updatedReminders)
+          }
+        />
       </div>
     </div>
   ) : (

@@ -1,14 +1,18 @@
 "use client";
 
+import CalendarModal from "@/components/CalendarModal";
 import CreateNoteModal from "@/components/CreateNoteModal";
 import MainScreenLoader from "@/components/MainScreenLoader";
 import NavBar from "@/components/NavBar";
 import NoteCard from "@/components/NoteCard";
 import PasswordChangeModal from "@/components/PasswordChangeModal";
+import ReminderNotification from "@/components/ReminderNotification";
 import { useWindowScrollPositions } from "@/helpers/useWindowScrollPositions";
 import { NoteInterface } from "@/types/note-interface";
+import { IReminder } from "@/types/reminder-interface";
 import { UserInterface } from "@/types/user-interface";
 import axios from "axios";
+import { format } from "date-fns";
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import { FaPlus } from "react-icons/fa";
@@ -24,6 +28,11 @@ function MyNotesPage() {
   const [notes, setNotes] = useState<NoteInterface[]>([]);
   const [editNote, setEditNote] = useState<NoteInterface | null>(null);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
+  const [calendarModalOpen, setCalendarModalOpen] = useState<boolean>(false);
+  const [reminders, setReminders] = useState<IReminder[]>();
+  const [currentReminderToasts, setCurrentReminderToasts] = useState<
+    IReminder[]
+  >([]);
   const { scrollY } = useWindowScrollPositions();
 
   // ---- useEffects Region Start ---- //
@@ -35,6 +44,46 @@ function MyNotesPage() {
     getMyNotes();
   }, [user]);
 
+  useEffect(() => {
+    // Check and show today's reminders
+    if (reminders) {
+      const todaysReminders = reminders.filter(
+        (reminder) =>
+          reminder.reminderDate === format(new Date(), "dd/MM/yyyy") &&
+          reminder.isDone === false
+      );
+
+      if (currentReminderToasts !== todaysReminders) {
+        let removeToastIds: (string | undefined)[] = [];
+        currentReminderToasts.forEach((reminder) => {
+          if (todaysReminders.find((r) => r._id === reminder._id)) {
+            return;
+          } else {
+            removeToastIds.push(reminder._id);
+          }
+        });
+        removeToastIds.map((id) => toast.dismiss(id));
+
+        setCurrentReminderToasts(todaysReminders);
+        todaysReminders.length &&
+          todaysReminders.map((reminder) => {
+            return toast(
+              <ReminderNotification
+                reminder={reminder}
+                onUpdate={(reminder: IReminder) =>
+                  handleUpdateReminders(reminder)
+                }
+              />,
+              {
+                autoClose: false,
+                toastId: reminder._id,
+              }
+            );
+          });
+      }
+    }
+  }, [reminders]);
+
   // ---- useEffects Region End ---- //
 
   // ---- Handler Functions & API Calls ---- //
@@ -43,11 +92,43 @@ function MyNotesPage() {
       const response = await axios.post("/api/auth/authuser");
       if (response.data.success) {
         setUser(response.data.data);
+        setReminders(response.data.reminders);
+        setUserLoading(false);
       } else {
         router.push("/login");
       }
     } catch (error: any) {
       router.push("/login");
+    }
+  };
+
+  const handleUpdateReminders = (reminder: IReminder) => {
+    updateReminders(reminder);
+  };
+
+  const updateReminders = async (updatedReminder: IReminder) => {
+    try {
+      const response = await axios.post(
+        "/api/reminder/update",
+        updatedReminder
+      );
+
+      if (response.data.success) {
+        toast.success("Reminder marked as Completed !");
+
+        let currentReminders = [...reminders!];
+        const index = currentReminders.indexOf(
+          currentReminders.find(
+            (reminder) => reminder._id === updatedReminder._id
+          )!
+        );
+        currentReminders.splice(index, 1, updatedReminder);
+        setReminders(currentReminders);
+      } else {
+        toast.error("Error occurred while marking reminder as completed !");
+      }
+    } catch (error) {
+      toast.error("Error occurred while marking reminder as completed !");
     }
   };
 
@@ -146,6 +227,7 @@ function MyNotesPage() {
       <ToastContainer position="top-center" />
       <NavBar
         user={user!}
+        onCalendarOpen={() => setCalendarModalOpen(true)}
         onPasswordChange={() => setPasswordModalOpen(true)}
         isSigningOut={handleSigningOut}
         switchPageOption={{ title: "My Boards", path: "/myboards" }}
@@ -172,6 +254,16 @@ function MyNotesPage() {
           toast.success("Password updated !");
         }}
         username={user.username!}
+      />
+
+      <CalendarModal
+        reminders={reminders!}
+        username={user.username!}
+        isOpen={calendarModalOpen}
+        onClose={() => setCalendarModalOpen(false)}
+        onUpdateReminder={(updatedReminders: IReminder[]) =>
+          setReminders([...updatedReminders])
+        }
       />
 
       <CreateNoteModal

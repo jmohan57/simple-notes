@@ -6,6 +6,7 @@ import React, { useState } from "react";
 
 interface NavBarProps {
   isSigningOut: () => void;
+  onCalendarOpen: () => void;
   onPasswordChange: () => void;
   switchPageOption?: { title: string; path: string };
   user: UserInterface;
@@ -27,7 +28,10 @@ function NavBar(props: NavBarProps) {
           <div className="relative flex h-16 items-center justify-between">
             <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
               <div className="flex flex-shrink-0 items-center text-white font-bold">
-                <h2 className="text-2xl cursor-pointer" onClick={() => router.push("/home")}>
+                <h2
+                  className="text-2xl cursor-pointer"
+                  onClick={() => router.push("/home")}
+                >
                   Simple Apps
                 </h2>
               </div>
@@ -88,6 +92,19 @@ function NavBar(props: NavBarProps) {
                     id="user-menu-item-1"
                     onClick={() => {
                       setIsOpen(false);
+                      props.onCalendarOpen();
+                    }}
+                  >
+                    My Calendar
+                  </a>
+                  <a
+                    href="#"
+                    className="block px-4 py-2 text-sm text-gray-700 dark:text-white"
+                    role="menuitem"
+                    tabIndex={-1}
+                    id="user-menu-item-2"
+                    onClick={() => {
+                      setIsOpen(false);
                       props.onPasswordChange();
                     }}
                   >
@@ -99,7 +116,7 @@ function NavBar(props: NavBarProps) {
                     className="block px-4 py-2 text-sm text-red-500 dark:text-red-500 font-bold"
                     role="menuitem"
                     tabIndex={-1}
-                    id="user-menu-item-2"
+                    id="user-menu-item-3"
                     onClick={handleSignOut}
                   >
                     Sign Out
