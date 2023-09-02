@@ -81,7 +81,7 @@ const CalendarContent: React.FC<CalendarContentProps> = ({
   };
 
   return (
-    <div>
+    <div className="text-black dark:text-white">
       <div className="text-center text-lg font-semibold mb-4">{monthName}</div>
       <div className="grid grid-cols-7 gap-1">
         {dayNames.map((dayName) => (
@@ -92,9 +92,9 @@ const CalendarContent: React.FC<CalendarContentProps> = ({
         {days.map((day) => (
           <div
             key={day.toString()}
-            className={`p-2 text-center cursor-pointer ${
+            className={`p-2 text-center cursor-pointer rounded-md ${
               isSameMonth(day, date) ? "" : "text-gray-400"
-            } ${isSameDayFn(day, currentDate) ? "bg-blue-300" : ""}
+            } ${isSameDayFn(day, currentDate) ? "bg-blue-300 dark:bg-blue-600" : ""}
             ${doesHaveReminder(day) ? "border-2 border-red-600" : ""}
             `}
             onClick={() => handleDayClick(day)}

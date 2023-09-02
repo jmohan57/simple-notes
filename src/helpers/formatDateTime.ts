@@ -12,7 +12,11 @@ export const formatDateTime = (date: string | Date): string => {
       : today.getDate() - 1 === lastEditedOnDate
       ? "Yesterday"
       : months[noteDate.getMonth()] + " " + lastEditedOnDate
-  }, at ${lastEditedOnTime}`;
+  },${
+    today.getFullYear() === noteDate.getFullYear()
+      ? ""
+      : " " + noteDate.getFullYear()
+  } at ${lastEditedOnTime}`;
 
   return formattedDate;
 };

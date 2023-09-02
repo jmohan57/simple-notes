@@ -81,7 +81,7 @@ const ReminderModal: React.FC<ReminderModalProps> = ({
                 return (
                   <span
                     key={reminder._id}
-                    className="w-[70vw] md:w-[30vw] flex p-2 justify-between items-center rounded-md
+                    className="w-[85vw] md:w-[50vw] lg:w-[30vw] flex p-2 justify-between items-center rounded-md
                     bg-gradient-to-br from-[#00416A] to-[#E4E5E6] text-black"
                   >
                     <span
@@ -150,7 +150,11 @@ const ReminderModal: React.FC<ReminderModalProps> = ({
             </button>
             <button
               className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-md"
-              onClick={onClose}
+              onClick={() => {
+                setUpdateReminder(null);
+                setReminderText("");
+                onClose();
+              }}
             >
               Cancel
             </button>

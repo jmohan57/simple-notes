@@ -54,9 +54,7 @@ const CalendarModal: React.FC<CalendarModalProps> = (props) => {
       if (response.data.success) {
         toast.success("Reminder added successfully !");
         let updatedReminders = reminders;
-        console.log(response.data.resultObject);
         updatedReminders.push(response.data.resultObject);
-        console.log(updatedReminders);
         setReminders(updatedReminders);
         props.onUpdateReminder(updatedReminders);
       } else {
@@ -123,7 +121,9 @@ const CalendarModal: React.FC<CalendarModalProps> = (props) => {
           <AiOutlineClose className="h-6 w-6" />
         </button>
         <div className="p-4">
-          <h2 className="text-2xl font-semibold mb-4">My Calendar</h2>
+          <h2 className="text-2xl text-black dark:text-white font-semibold mb-4">
+            My Calendar
+          </h2>
           <span className="w-full flex justify-between items-center">
             <button
               className="mb-2 bg-blue-500 hover:bg-blue-700 py-2 px-4 rounded text-white"
