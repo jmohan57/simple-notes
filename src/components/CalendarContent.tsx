@@ -80,6 +80,17 @@ const CalendarContent: React.FC<CalendarContentProps> = ({
     );
   };
 
+  const doesHaveIncompleteReminder = (day: Date) => {
+    return (
+      remindersData &&
+      remindersData
+        .filter(
+          (reminder) => reminder.reminderDate === format(day, "dd/MM/yyyy")
+        )
+        .find((reminder) => reminder.isDone === false)
+    );
+  };
+
   return (
     <div className="text-black dark:text-white">
       <div className="text-center text-lg font-semibold mb-4">{monthName}</div>
@@ -94,8 +105,18 @@ const CalendarContent: React.FC<CalendarContentProps> = ({
             key={day.toString()}
             className={`p-2 text-center cursor-pointer rounded-md ${
               isSameMonth(day, date) ? "" : "text-gray-400"
-            } ${isSameDayFn(day, currentDate) ? "bg-blue-300 dark:bg-blue-600" : ""}
-            ${doesHaveReminder(day) ? "border-2 border-red-600" : ""}
+            } ${
+              isSameDayFn(day, currentDate)
+                ? "bg-blue-300 dark:bg-blue-600"
+                : ""
+            }
+            ${
+              doesHaveReminder(day)
+                ? doesHaveIncompleteReminder(day)
+                  ? "border-2 border-red-600"
+                  : "border-2 border-green-600"
+                : ""
+            }
             `}
             onClick={() => handleDayClick(day)}
           >
