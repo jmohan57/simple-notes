@@ -1,17 +1,32 @@
 export const formatDateTime = (date: string | Date): string => {
   const today = new Date();
   const noteDate = typeof date === "string" ? new Date(date) : date;
-  const lastEditedOnDate = noteDate.getDate();
   const lastEditedOnTime = noteDate.toLocaleString("en-US", {
     timeStyle: "short",
   });
 
+  const isToday = (): boolean => {
+    return (
+      today.getDate() === noteDate.getDate() &&
+      today.getMonth() === noteDate.getMonth() &&
+      today.getFullYear() === noteDate.getFullYear()
+    );
+  };
+
+  const isYesterday = (): boolean => {
+    return (
+      today.getDate() - 1 === noteDate.getDate() &&
+      today.getMonth() === noteDate.getMonth() &&
+      today.getFullYear() === noteDate.getFullYear()
+    );
+  };
+
   const formattedDate: string = `${
-    today.getDate() === lastEditedOnDate
+    isToday()
       ? "Today"
-      : today.getDate() - 1 === lastEditedOnDate
+      : isYesterday()
       ? "Yesterday"
-      : months[noteDate.getMonth()] + " " + lastEditedOnDate
+      : months[noteDate.getMonth()] + " " + noteDate.getDate()
   },${
     today.getFullYear() === noteDate.getFullYear()
       ? ""
