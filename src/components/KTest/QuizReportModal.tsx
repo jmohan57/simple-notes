@@ -39,13 +39,19 @@ const QuizReportModal: React.FC<Props> = ({ isOpen, closeModal, quizData }) => {
   }
 
   if (quizData) {
-    const totalCorrectQuestion: number = quizData.reportData
-      .map((dl) => dl.correct)
-      .reduce((acc, dl) => acc + dl);
+    const totalCorrectQuestion: number =
+      quizData.reportData.map((dl) => dl.correct).length > 0
+        ? quizData.reportData
+            .map((dl) => dl.correct)
+            .reduce((acc, dl) => acc + dl)
+        : 0;
 
-    const totalInCorrectQuestion: number = quizData.reportData
-      .map((dl) => dl.incorrect)
-      .reduce((acc, dl) => acc + dl);
+    const totalInCorrectQuestion: number =
+      quizData.reportData.map((dl) => dl.incorrect).length > 0
+        ? quizData.reportData
+            .map((dl) => dl.incorrect)
+            .reduce((acc, dl) => acc + dl)
+        : 0;
 
     const totalQuestions: number =
       totalCorrectQuestion + totalInCorrectQuestion;
