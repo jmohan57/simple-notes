@@ -43,8 +43,8 @@ Welcome to the GitHub repository for Simple Apps, your all-in-one productivity c
 
 ## Getting Started
 
-1. Clone the repository: `git clone https://github.com/your-username/simple-apps.git`
-2. Navigate to the project directory: `cd simple-apps`
+1. Clone the repository: `git clone https://github.com/avisek-official/simple-notes.git`
+2. Navigate to the project directory: `cd simple-notes`
 3. Install dependencies: `npm install`
 4. Set up MongoDB connection and credentials.
 5. Run the development server: `npm run dev`
